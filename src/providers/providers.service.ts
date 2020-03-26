@@ -1,8 +1,10 @@
+
 import { Inject, Injectable } from '@nestjs/common';
 import { PROVIDERS_MODEL } from '../constants';
 import { Model } from "mongoose";
 import { Provider } from './interfaces/provider.interface';
 import { CreateProviderDto } from './dto/create-provider.dto';
+import { Video } from '../videos/interfaces/video.interface';
 
 @Injectable()
 export class ProvidersService {
@@ -20,8 +22,19 @@ export class ProvidersService {
     return await this.providerModel.find(query).exec();
   }
 
-  async findOne(id: string): Promise<Provider> {
-    return this.providerModel.findOne({ _id: id });
+  async getVideosForProvider(providerCode: string): Promise<Video[]> {
+
+    const provider = await this.providerModel.findOne({code: providerCode})
+      .populate('videos')
+      .exec();
+
+    // if (err) return Promise.reject(err);
+
+    return Promise.resolve(provider.videos);
+  }
+
+  async findOneByCode(code: string): Promise<Provider> {
+    return this.providerModel.findOne({ code: code });
   }
 
   async delete(id: string): Promise<Provider> {

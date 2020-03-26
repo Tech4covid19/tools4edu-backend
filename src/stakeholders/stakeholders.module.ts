@@ -20,6 +20,11 @@ export const stakeholdersProviders = [
     ...stakeholdersProviders,
     StakeholdersService,
     StakeholdersResolver
+  ],
+  exports: [
+    ...stakeholdersProviders,
+    StakeholdersService,
+    StakeholdersResolver
   ]
 })
 export class StakeholdersModule {}

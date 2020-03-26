@@ -1,9 +1,9 @@
-import { Document } from 'mongoose';
-import { Stakeholder } from '../../stakeholders/interfaces/stakeholder.interface';
+import { Document, Schema } from 'mongoose';
 
 export interface Video extends Document {
   readonly order: number;
+  readonly videoUrl: string;
   readonly title: string;
   readonly description: string;
-  readonly stakeholder: Stakeholder;
+  readonly stakeholder: Schema.Types.ObjectId;
 }

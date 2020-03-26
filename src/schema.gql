@@ -2,27 +2,33 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Provider {
+  id: ID!
+  order: Int!
+  code: String!
+  title: String!
+  description: String!
+  videos: [Video!]!
+}
+
 type Query {
   video(id: ID!): Video!
+  videos: [Video!]!
   stakeholder(id: ID!): Stakeholder!
+  provider(code: String!): Provider!
 }
 
 type Stakeholder {
   id: ID!
-  code: StakeholderCode!
+  code: String!
   title: String!
   description: String
-}
-
-enum StakeholderCode {
-  ALUNO
-  PROFESSOR
-  PAIS
 }
 
 type Video {
   id: ID!
   order: Int!
+  videoUrl: String!
   title: String!
   description: String!
   stakeholder: Stakeholder!

@@ -5,6 +5,10 @@ export const ProviderSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  code: {
+    type: String,
+    required: true
+  },
   title: {
     type: String,
     required: true
@@ -15,7 +19,7 @@ export const ProviderSchema = new mongoose.Schema({
   },
   videos: [
     {
-      type: mongoose.Schema.Types.ObjectId, ref: 'Video'
+      type: [mongoose.Schema.Types.ObjectId], ref: 'Video'
     }
   ]
 });

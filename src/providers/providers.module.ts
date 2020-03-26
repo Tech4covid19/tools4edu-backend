@@ -5,6 +5,7 @@ import { DB_CONNECTION_PROVIDER, PROVIDERS_MODEL } from '../constants';
 import { Connection } from "mongoose";
 import { DatabaseModule } from '../database/database.module';
 import { ProviderSchema } from './schemas/providers.schema';
+import { VideosModule } from '../videos/videos.module';
 
 export const providersProviders = [
   {
@@ -15,8 +16,16 @@ export const providersProviders = [
 ];
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [
+    DatabaseModule,
+    VideosModule
+  ],
   providers: [
+    ...providersProviders,
+    ProvidersService,
+    ProvidersResolver
+  ],
+  exports: [
     ...providersProviders,
     ProvidersService,
     ProvidersResolver

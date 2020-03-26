@@ -5,6 +5,7 @@ import { DB_CONNECTION_PROVIDER, VIDEOS_MODEL } from '../constants';
 import { Connection } from 'mongoose';
 import { VideoSchema } from './schemas/videos.schema';
 import { DatabaseModule } from '../database/database.module';
+import { StakeholdersModule } from '../stakeholders/stakeholders.module';
 
 export const videosProviders = [
   {
@@ -15,8 +16,16 @@ export const videosProviders = [
 ];
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [
+    DatabaseModule,
+    StakeholdersModule
+  ],
   providers: [
+    ...videosProviders,
+    VideosService,
+    VideosResolver
+  ],
+  exports: [
     ...videosProviders,
     VideosService,
     VideosResolver
