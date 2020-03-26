@@ -1,10 +1,10 @@
 import * as mongoose from 'mongoose';
-import { DB_CONNECTION_PROVIDER } from '../constants';
+import { DB_LANDINGPAGE_CONNECTION } from '../constants';
 
 export const databaseProviders = [
   {
-    provide: DB_CONNECTION_PROVIDER,
+    provide: DB_LANDINGPAGE_CONNECTION,
     useFactory: (): Promise<typeof mongoose> =>
-      mongoose.connect(`mongodb+srv://tools4edu_dbuser:hqw7VK8yW8m5zvu@tools4edu-cluster-bxyju.mongodb.net/landingpage?retryWrites=true&w=majority`)
+      mongoose.connect(process.env.DATABASE_LANDINGPAGE_CONNECTION_STRING)
   }
 ];
