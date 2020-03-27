@@ -1,5 +1,4 @@
 import { Field, ObjectType, ID, Int } from '@nestjs/graphql';
-import { Stakeholder } from '../../stakeholders/models/stakeholder.model';
 
 @ObjectType()
 export class Video {
@@ -10,11 +9,14 @@ export class Video {
   order: number;
 
   @Field()
+  videoUrl: string;
+
+  @Field()
   title: string;
 
   @Field()
   description: string;
 
-  @Field(type => Stakeholder)
-  stakeholder: Stakeholder
+  @Field(type => ID)
+  stakeholder: string;
 }

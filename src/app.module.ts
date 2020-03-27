@@ -6,9 +6,14 @@ import { join } from 'path';
 import { VideosModule } from './videos/videos.module';
 import { StakeholdersModule } from './stakeholders/stakeholders.module';
 import { ProvidersModule } from './providers/providers.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['.env.development']
+    }),
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql')
     }),
