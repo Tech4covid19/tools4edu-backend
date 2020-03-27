@@ -1,0 +1,6 @@
+type Query {
+    stakeholder(id: ID!): Stakeholder!
+    provider(code: String!): Provider!
+    video(id: ID!): Video!
+    videos: [Video!]!
+}

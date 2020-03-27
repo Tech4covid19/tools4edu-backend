@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "name": "tools4edu-backend",
+  "builds": [
+    {
+      "src": "dist/main.js",
+      "use": "@now/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "dist/main.js"
+    }
+  ],
+  "env": {
+    "DATABASE_LANDINGPAGE_CONNECTION_STRING": "mongodb+srv://tools4edu_dbuser:hqw7VK8yW8m5zvu@tools4edu-cluster-bxyju.mongodb.net/landingpage?retryWrites=true&w=majority"
+  }
+}
