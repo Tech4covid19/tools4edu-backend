@@ -3,15 +3,20 @@ import { VIDEOS_MODEL } from '../constants';
 import { Video } from './interfaces/video.interface';
 import { Model } from 'mongoose';
 import { CreateVideoDto } from './dto/create-video.dto';
+import { StakeholdersService } from '../stakeholders/stakeholders.service';
 
 @Injectable()
 export class VideosService {
   constructor(
     @Inject(VIDEOS_MODEL)
-    private videoModel: Model<Video>
+    private videoModel: Model<Video>,
+    private stakeholdersService: StakeholdersService
   ) {}
 
   async create(createVideoDto: CreateVideoDto): Promise<Video> {
+    const createdStakeholder = await this.stakeholdersService.create(createVideoDto.stakeholder);
+
+
     const createdVideo = new this.videoModel(createVideoDto);
     return createdVideo.save();
   }
