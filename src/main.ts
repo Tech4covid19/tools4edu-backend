@@ -6,12 +6,13 @@ declare const module: any;
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  await app.listen(process.env.PORT || 3000);
 
-  if (module.hot && !process.env.production) {
-    module.hot.accept();
-    module.hot.dispose(() => app.close());
-  }
+  app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Origin', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+  });
 
+  await app.listen(process.env.API_WEB_PORT || 3000, process.env.API_WEB_HOST || 'localhost');
 }
 bootstrap();
