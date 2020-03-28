@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { GraphQLModule } from '@nestjs/graphql';
+import { GraphQLModule, GqlModuleOptions } from '@nestjs/graphql';
 import { join } from 'path';
 import { VideosModule } from './videos/videos.module';
 import { StakeholdersModule } from './stakeholders/stakeholders.module';
@@ -14,13 +14,27 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
       envFilePath: ['.env.development']
     }),
-    GraphQLModule.forRoot({
-      typePaths: ['./**/*.graphql'],
-      definitions: {
-        path: join(process.cwd(), 'src/graphql.ts'),
-        outputAs: 'class',
-      },
-    }),
+  
+      GraphQLModule.forRootAsync({
+        useFactory: () => {
+          const schemaModuleOptions: Partial<GqlModuleOptions> = {};
+  
+          // If we are in development, we want to generate the schema.graphql
+          if (process.env.NODE_ENV !== 'production' || process.env.IS_OFFLINE) {
+            schemaModuleOptions.autoSchemaFile = '/tmp/schema.gql';
+          } else {
+            // For production, the file should be generated
+            schemaModuleOptions.typePaths = ['dist/*.gql'];
+          }
+  
+          return {
+            context: ({ req }) => ({ req }),
+            playground: true, // Allow playground in production
+            introspection: true, // Allow introspection in production
+            ...schemaModuleOptions,
+          };
+        },
+      }),
     VideosModule,
     StakeholdersModule,
     ProvidersModule
