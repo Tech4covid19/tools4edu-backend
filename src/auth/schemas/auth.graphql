@@ -1,0 +1,19 @@
+input LoginInput {
+    email: String!,
+    password: String!
+}
+
+input RegisterInput {
+    name: String!,
+    email: String!,
+    password: String!
+}
+
+type User {
+    name: String,
+    email: String,
+    password: String,
+    IdToken: String,
+    AccessToken: String,
+    RefreshToken: String
+}
