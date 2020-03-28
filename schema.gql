@@ -8,7 +8,7 @@ type Provider {
   code: String!
   title: String!
   description: String!
-  videos: [Video!]!
+  videos(stakeholder: String): [Video!]!
 }
 
 type Query {

@@ -1,6 +1,0 @@
-type Stakeholder {
-    id: ID!
-    code: String!
-    title: String!
-    description: String
-}

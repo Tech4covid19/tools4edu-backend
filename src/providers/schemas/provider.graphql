@@ -1,8 +1,0 @@
-type Provider {
-    id: ID!
-    order: Int!
-    code: String!
-    title: String!
-    description: String!
-    videos: [Video!]!
-}
