@@ -19,7 +19,7 @@ package:
 
 functions:
   index:
-    handler: src/index.handler
+    handler: src/serverless.handler
     events:
     - http:
         cors: true
