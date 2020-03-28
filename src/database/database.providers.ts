@@ -5,6 +5,6 @@ export const databaseProviders = [
   {
     provide: DB_LANDINGPAGE_CONNECTION,
     useFactory: (): Promise<typeof mongoose> =>
-      mongoose.connect(process.env.DATABASE_LANDINGPAGE_CONNECTION_STRING)
+    mongoose.connect(`mongodb+srv://api:BOuvhU6EkjJbDRZe@tools4edu-cluster-bxyju.mongodb.net/landingpage?retryWrites=true&w=majority`)
   }
 ];

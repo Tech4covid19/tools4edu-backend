@@ -1,18 +1,20 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { NestExpressApplication } from '@nestjs/platform-express';
+import { NestExpressApplication, ExpressAdapter } from '@nestjs/platform-express';
+import * as express from 'express';
 
+const expressApp = express();
 declare const module: any;
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, new ExpressAdapter(expressApp));
+  await app.listen(3000);
 
-  app.use(function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Origin', 'Origin, X-Requested-With, Content-Type, Accept');
-    next();
-  });
+  if (module.hot && !process.env.production) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
 
-  await app.listen(process.env.API_WEB_PORT || 3000, process.env.API_WEB_HOST || 'localhost');
 }
 bootstrap();
+
