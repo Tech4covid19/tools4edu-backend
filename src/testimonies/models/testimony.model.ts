@@ -1,16 +1,16 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class Stakeholder {
+export class Testimony {
   @Field(() => ID)
   id: string;
 
   @Field()
-  code: string;
+  author: string;
 
   @Field()
-  title: string;
+  occupation: string;
 
-  @Field({ nullable: true })
-  description?: string;
+  @Field()
+  text: string;
 }

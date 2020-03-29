@@ -7,6 +7,7 @@ import { StakeholdersModule } from './stakeholders/stakeholders.module';
 import { ProvidersModule } from './providers/providers.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { TestimoniesModule } from './testimonies/testimonies.module';
 
 @Module({
   imports: [
@@ -38,7 +39,8 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
     VideosModule,
     StakeholdersModule,
-    ProvidersModule
+    ProvidersModule,
+    TestimoniesModule
   ],
   controllers: [AppController],
   providers: [AppService],
