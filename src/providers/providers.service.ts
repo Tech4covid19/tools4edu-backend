@@ -22,13 +22,24 @@ export class ProvidersService {
     return await this.providerModel.find(query).exec();
   }
 
-  async getVideosForProvider(providerCode: string): Promise<Video[]> {
+  async getVideosForProvider(providerCode: string, populateStakeholder?: boolean): Promise<Video[]> {
+
+    let populateOpts = {};
+
+    if (populateStakeholder) {
+      populateOpts = {
+        path: 'videos',
+        populate: { path: 'stakeholder' }
+      }
+    } else {
+      populateOpts = {
+        path: 'videos'
+      }
+    }
 
     const provider = await this.providerModel.findOne({code: providerCode})
-      .populate('videos')
+      .populate(populateOpts)
       .exec();
-
-    // if (err) return Promise.reject(err);
 
     return Promise.resolve(provider.videos);
   }

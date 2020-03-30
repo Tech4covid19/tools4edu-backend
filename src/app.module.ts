@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { GraphQLModule, GqlModuleOptions } from '@nestjs/graphql';
-import { join } from 'path';
+import { GraphQLModule } from '@nestjs/graphql';
 import { VideosModule } from './videos/videos.module';
 import { StakeholdersModule } from './stakeholders/stakeholders.module';
 import { ProvidersModule } from './providers/providers.module';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
+import { TestimoniesModule } from './testimonies/testimonies.module';
 
 @Module({
   imports: [
@@ -15,29 +16,31 @@ import { ConfigModule } from '@nestjs/config';
       envFilePath: ['.env.development']
     }),
   
-      GraphQLModule.forRootAsync({
-        useFactory: () => {
-          const schemaModuleOptions: Partial<GqlModuleOptions> = {};
-  
-          // If we are in development, we want to generate the schema.graphql
-          if (process.env.NODE_ENV !== 'production' || process.env.IS_OFFLINE) {
-            schemaModuleOptions.autoSchemaFile = '/tmp/schema.gql';
-          } else {
-            // For production, the file should be generated
-            schemaModuleOptions.typePaths = ['dist/*.gql'];
-          }
-  
-          return {
-            context: ({ req }) => ({ req }),
-            playground: true, // Allow playground in production
-            introspection: true, // Allow introspection in production
-            ...schemaModuleOptions,
-          };
-        },
-      }),
+    GraphQLModule.forRootAsync({
+      useFactory: () => {
+        // const schemaModuleOptions: Partial<GqlModuleOptions> = {};
+
+        // // If we are in development, we want to generate the schema.graphql
+        // if (process.env.NODE_ENV !== 'production' || process.env.IS_OFFLINE) {
+        //   schemaModuleOptions.autoSchemaFile = './schema.gql';
+        // } else {
+        //   // For production, the file should be generated
+        //   schemaModuleOptions.typePaths = ['dist/*.gql'];
+        // }
+
+        return {
+          context: ({ req }) => ({ req }),
+          playground: true, // Allow playground in production
+          introspection: true, // Allow introspection in production
+          autoSchemaFile: true,
+        };
+      },
+    }),
+    AuthModule,
     VideosModule,
     StakeholdersModule,
-    ProvidersModule
+    ProvidersModule,
+    TestimoniesModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,0 +1,35 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Provider {
+  id: ID!
+  order: Int!
+  code: String!
+  title: String!
+  description: String!
+  videos(stakeholder: String): [Video!]!
+}
+
+type Query {
+  video(id: ID!): Video!
+  videos: [Video!]!
+  stakeholder(id: ID!): Stakeholder!
+  provider(code: String!): Provider!
+}
+
+type Stakeholder {
+  id: ID!
+  code: String!
+  title: String!
+  description: String
+}
+
+type Video {
+  id: ID!
+  order: Int!
+  videoUrl: String!
+  title: String!
+  description: String!
+  stakeholder: Stakeholder!
+}
