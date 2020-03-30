@@ -1,3 +1,8 @@
+import { Auth } from './interfaces/auth.interface';
+
+declare const global: any;
+global.fetch = require('node-fetch');
+
 import { Injectable } from '@nestjs/common';
 import {
   AuthenticationDetails,
@@ -14,8 +19,8 @@ export class AuthService {
 
   constructor() {
     this.userPool = new CognitoUserPool({
-      UserPoolId: 'us-east-1_txKIBpet5',
-      ClientId: '1dci5iouhb503bc5f90ec6rqm2'
+      UserPoolId: 'us-east-1_p1GLIzxBk',
+      ClientId: '6mv2gugukvlkl7fok2krtumbq2',
     })
   }
 
@@ -51,14 +56,33 @@ export class AuthService {
 
     const user = new CognitoUser(userData);
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject: any) => {
       return user.authenticateUser(authDetails, {
         onSuccess: (result) => {
-          resolve(result)
+          resolve({
+            accessToken: result.getAccessToken().getJwtToken(),
+            refreshToken: result.getRefreshToken().getToken()
+          });
         },
         onFailure: ((err) => {
+          console.log('err', err);
           reject(err)
-        })
+        }),
+        // newPasswordRequired: ((authDetails) => {
+        //
+        //   delete authDetails.email_verified;
+        //
+        //   user.completeNewPasswordChallenge('Teste111', authDetails, {
+        //     onSuccess: (result) => {
+        //       console.log('result new pass challenge', result)
+        //       resolve(result)
+        //     },
+        //     onFailure: (err) => {
+        //       reject(err)
+        //     }
+        //   });
+        //   return null;
+        // })
       })
     })
   }
