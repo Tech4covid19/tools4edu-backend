@@ -9,6 +9,10 @@ export const VideoSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  time: {
+    type: String,
+    required: true
+  },
   title: {
     type: String,
     required: true

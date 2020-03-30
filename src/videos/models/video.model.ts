@@ -12,6 +12,9 @@ export class Video {
   videoUrl: string;
 
   @Field()
+  time: string;
+
+  @Field()
   title: string;
 
   @Field()
