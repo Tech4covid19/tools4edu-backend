@@ -1,7 +1,7 @@
 import { promisify } from 'util';
 import * as Axios from 'axios';
 import * as jsonwebtoken from 'jsonwebtoken';
-import jwkToPem from 'jwk-to-pem';
+import * as jwkToPem from 'jwk-to-pem';
 
 export interface ClaimVerifyRequest {
   readonly token?: string;
@@ -50,7 +50,7 @@ interface Claim {
   client_id: string;
 }
 
-const cognitoPoolId = 'us-east-1_txKIBpet5';
+const cognitoPoolId = 'us-east-1_p1GLIzxBk';
 const cognitoIssuer = `https://cognito-idp.us-east-1.amazonaws.com/${cognitoPoolId}`;
 
 let cacheKeys: MapOfKidToPublicKey | undefined;
@@ -71,10 +71,10 @@ const getPublicKeys = async (): Promise<MapOfKidToPublicKey> => {
 
 const verifyPromised = promisify(jsonwebtoken.verify.bind(jsonwebtoken));
 
-const handler = async (request: ClaimVerifyRequest): Promise<ClaimVerifyResult> => {
+const verifyHandler = async (request: ClaimVerifyRequest): Promise<ClaimVerifyResult> => {
   let result: ClaimVerifyResult;
   try {
-    console.log(`user claim verfiy invoked for ${JSON.stringify(request)}`);
+    console.log(`user claim verfiy invoked`, request);
     const token = request.token;
     const tokenSections = (token || '').split('.');
     if (tokenSections.length < 2) {
@@ -106,4 +106,4 @@ const handler = async (request: ClaimVerifyRequest): Promise<ClaimVerifyResult> 
   return result;
 };
 
-export {handler};
+export {verifyHandler};

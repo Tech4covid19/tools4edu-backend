@@ -1,8 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { Testimony } from './interfaces/testimony.interface';
-import { CreateTestimonyDto } from './dto/create-testimony.dto';
+import { CreateTestimonyDto, UpdateTestimonyDto } from './dto/testimony.dto';
 import { TESTIMONIES_MODEL } from '../constants';
+import { TestimonyInputUpdate } from './models/testimony.model';
 
 
 @Injectable()
@@ -29,7 +30,7 @@ export class TestimoniesService {
     return this.testimonyModel.findByIdAndRemove(id)
   }
 
-  async update(id: string, testimony: Testimony): Promise<Testimony> {
+  async update(id: string, testimony: UpdateTestimonyDto): Promise<Testimony> {
     return this.testimonyModel.findByIdAndUpdate(id, testimony, { new: true });
   }
 }

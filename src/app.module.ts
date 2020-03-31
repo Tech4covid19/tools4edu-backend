@@ -33,6 +33,7 @@ import { TestimoniesModule } from './testimonies/testimonies.module';
           playground: true, // Allow playground in production
           introspection: true, // Allow introspection in production
           autoSchemaFile: true,
+          cors: true,
         };
       },
     }),

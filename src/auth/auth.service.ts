@@ -72,7 +72,7 @@ export class AuthService {
         //
         //   delete authDetails.email_verified;
         //
-        //   user.completeNewPasswordChallenge('Teste111', authDetails, {
+        //   user.completeNewPasswordChallenge('[ENTER PASSWORD HERE]', authDetails, {
         //     onSuccess: (result) => {
         //       console.log('result new pass challenge', result)
         //       resolve(result)
