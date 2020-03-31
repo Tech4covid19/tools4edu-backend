@@ -1,6 +1,4 @@
 import { Field, ObjectType, ID, Int, InputType } from '@nestjs/graphql';
-import { Stakeholder as IStakeholder } from '../../stakeholders/interfaces/stakeholder.interface';
-import { Stakeholder } from '../../stakeholders/models/stakeholder.model';
 
 @ObjectType()
 export class Video {
