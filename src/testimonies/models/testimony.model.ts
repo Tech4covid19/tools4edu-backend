@@ -13,6 +13,9 @@ export class Testimony {
 
   @Field()
   text: string;
+
+  @Field()
+  published: boolean;
 }
 
 @InputType()
@@ -25,6 +28,9 @@ export class TestimonyInputCreate {
 
   @Field()
   text: string;
+
+  @Field()
+  published: boolean;
 }
 
 @InputType()
@@ -37,4 +43,7 @@ export class TestimonyInputUpdate {
 
   @Field({ nullable: true })
   text: string;
+
+  @Field({ nullable: true })
+  published: boolean;
 }
