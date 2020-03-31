@@ -8,6 +8,7 @@ import { ProvidersModule } from './providers/providers.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { TestimoniesModule } from './testimonies/testimonies.module';
+import { FaqsModule } from './faqs/faqs.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { TestimoniesModule } from './testimonies/testimonies.module';
           playground: true, // Allow playground in production
           introspection: true, // Allow introspection in production
           autoSchemaFile: true,
+          cors: true,
         };
       },
     }),
@@ -40,7 +42,8 @@ import { TestimoniesModule } from './testimonies/testimonies.module';
     VideosModule,
     StakeholdersModule,
     ProvidersModule,
-    TestimoniesModule
+    TestimoniesModule,
+    FaqsModule
   ],
   controllers: [AppController],
   providers: [AppService],

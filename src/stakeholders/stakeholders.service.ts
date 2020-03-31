@@ -21,6 +21,10 @@ export class StakeholdersService {
     return await this.stakeholderModel.find(query).exec();
   }
 
+  async findOneByQuery(query = {}): Promise<Stakeholder> {
+    return this.stakeholderModel.findOne(query);
+  }
+
   async findOne(id: string): Promise<Stakeholder> {
     return this.stakeholderModel.findOne({ _id: id });
   }

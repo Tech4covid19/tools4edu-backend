@@ -2,18 +2,15 @@ import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class Auth {
-  @Field()
-  name: string;
+  @Field({ nullable: true })
+  name?: string;
+
+  @Field({ nullable: true })
+  email?: string;
 
   @Field()
-  email: string;
+  accessToken: string;
 
   @Field()
-  IdToken: string;
-
-  @Field()
-  AccessToken: string;
-
-  @Field()
-  RefreshToken: string;
+  refreshToken: string;
 }

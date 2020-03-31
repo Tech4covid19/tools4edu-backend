@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { VIDEOS_MODEL } from '../constants';
 import { Video } from './interfaces/video.interface';
-import { Model } from 'mongoose';
-import { CreateVideoDto } from './dto/create-video.dto';
+import { Model, Types } from 'mongoose';
+import { CreateVideoDto, UpdateVideoDto } from './dto/video.dto';
 import { StakeholdersService } from '../stakeholders/stakeholders.service';
 
 @Injectable()
@@ -14,11 +14,17 @@ export class VideosService {
   ) {}
 
   async create(createVideoDto: CreateVideoDto): Promise<Video> {
-    const createdStakeholder = await this.stakeholdersService.create(createVideoDto.stakeholder);
+    const foundStakeholder = await this.stakeholdersService.findOne(createVideoDto.stakeholderId);
 
-
-    const createdVideo = new this.videoModel(createVideoDto);
-    return createdVideo.save();
+    if (foundStakeholder) {
+      const createdVideo = new this.videoModel({
+        ...createVideoDto,
+        stakeholder: Types.ObjectId(createVideoDto.stakeholderId)
+      });
+      return createdVideo.save();
+    } else {
+      throw new Error('Stakeholder not found')
+    }
   }
 
   async findAll(query = {}): Promise<Video[]> {
@@ -33,7 +39,7 @@ export class VideosService {
     return this.videoModel.findByIdAndRemove(id)
   }
 
-  async update(id: string, video: Video): Promise<Video> {
+  async update(id: string, video: UpdateVideoDto): Promise<Video> {
     return this.videoModel.findByIdAndUpdate(id, video, { new: true });
   }
 }

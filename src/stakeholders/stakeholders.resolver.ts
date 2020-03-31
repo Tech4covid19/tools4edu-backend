@@ -9,7 +9,11 @@ export class StakeholdersResolver {
   ) {}
 
   @Query(returns => Stakeholder)
-  async stakeholder(@Args('id', { type: () => ID }) id: string ) {
-    return this.stakeholdersService.findOne(id);
+  async stakeholder(
+    @Args('code') code: string
+  ) {
+    return this.stakeholdersService.findOneByQuery({
+      code: code
+    });
   }
 }

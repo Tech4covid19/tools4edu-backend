@@ -12,5 +12,9 @@ export const TestimonySchema = new mongoose.Schema({
   text: {
     type: String,
     required: true
+  },
+  published: {
+    type: Boolean,
+    required: true
   }
 });
