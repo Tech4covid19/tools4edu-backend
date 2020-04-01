@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { TestimoniesModule } from './testimonies/testimonies.module';
 import { FaqsModule } from './faqs/faqs.module';
+import { BlogModule } from './blog/blog.module';
 
 @Module({
   imports: [
@@ -43,7 +44,8 @@ import { FaqsModule } from './faqs/faqs.module';
     StakeholdersModule,
     ProvidersModule,
     TestimoniesModule,
-    FaqsModule
+    FaqsModule,
+    BlogModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -3,7 +3,6 @@ import { Model } from 'mongoose';
 import { Testimony } from './interfaces/testimony.interface';
 import { CreateTestimonyDto, UpdateTestimonyDto } from './dto/testimony.dto';
 import { TESTIMONIES_MODEL } from '../constants';
-import { TestimonyInputUpdate } from './models/testimony.model';
 
 
 @Injectable()

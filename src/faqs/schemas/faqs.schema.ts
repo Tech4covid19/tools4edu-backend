@@ -15,7 +15,8 @@ export const FaqSchema = new mongoose.Schema({
   },
   published: {
     type: Boolean,
-    required: true
+    required: true,
+    default: false
   },
   stakeholder: {
     type: mongoose.Schema.Types.ObjectId, ref: 'Stakeholder'
