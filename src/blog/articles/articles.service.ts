@@ -1,14 +1,14 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { BlogArticle } from './interfaces/article.interface';
 import { CreateBlogArticleDto, UpdateBlogArticleDto } from './dto/article.dto';
-import { BLOG_ARTICLE_MODEL } from '../../constants';
+import { InjectModel } from '@nestjs/mongoose';
 
 
 @Injectable()
 export class ArticlesService {
   constructor(
-    @Inject(BLOG_ARTICLE_MODEL)
+    @InjectModel('BlogArticle')
     private blogArticleModel: Model<BlogArticle>
   ) {}
 

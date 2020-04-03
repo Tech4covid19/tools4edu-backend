@@ -1,15 +1,15 @@
 
-import { Inject, Injectable } from '@nestjs/common';
-import { PROVIDERS_MODEL } from '../constants';
+import { Injectable } from '@nestjs/common';
 import { Model } from "mongoose";
 import { Provider } from './interfaces/provider.interface';
 import { CreateProviderDto } from './dto/create-provider.dto';
 import { Video } from '../videos/interfaces/video.interface';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class ProvidersService {
   constructor(
-    @Inject(PROVIDERS_MODEL)
+    @InjectModel('Provider')
     private providerModel: Model<Provider>
   ) {}
 

@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { TestimoniesModule } from './testimonies/testimonies.module';
 import { FaqsModule } from './faqs/faqs.module';
 import { BlogModule } from './blog/blog.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { BlogModule } from './blog/blog.module';
         };
       },
     }),
+    DatabaseModule,
     AuthModule,
     VideosModule,
     StakeholdersModule,

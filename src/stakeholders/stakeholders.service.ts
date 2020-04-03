@@ -1,14 +1,14 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { Stakeholder } from './interfaces/stakeholder.interface';
 import { CreateStakeholderDto } from './dto/create-stakeholder.dto';
-import { STAKEHOLDER_MODEL } from '../constants';
+import { InjectModel } from '@nestjs/mongoose';
 
 
 @Injectable()
 export class StakeholdersService {
   constructor(
-    @Inject(STAKEHOLDER_MODEL)
+    @InjectModel('Stakeholder')
     private stakeholderModel: Model<Stakeholder>
   ) {}
 

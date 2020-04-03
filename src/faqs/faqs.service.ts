@@ -1,14 +1,14 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { FAQS_MODEL } from '../constants';
+import { Injectable } from '@nestjs/common';
 import { Faq } from './interfaces/faq.interface';
 import { Model, Types } from 'mongoose';
 import { CreateFaqDto, UpdateFaqDto } from './dto/faq.dto';
 import { StakeholdersService } from '../stakeholders/stakeholders.service';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class FaqsService {
   constructor(
-    @Inject(FAQS_MODEL)
+    @InjectModel('Faq')
     private faqModel: Model<Faq>,
     private stakeholdersService: StakeholdersService
   ) {}

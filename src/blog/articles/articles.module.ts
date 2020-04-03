@@ -3,26 +3,24 @@ import { Connection } from 'mongoose';
 import { ArticlesService } from './articles.service';
 import { ArticlesResolver } from './articles.resolver';
 import { BlogArticleSchema } from './schemas/articles.schema';
-import { DB_BLOG_CONNECTION, BLOG_ARTICLE_MODEL } from '../../constants';
-import { DatabaseModule } from '../../database/database.module';
-
-export const blogArticlesProviders = [
-  {
-    provide: BLOG_ARTICLE_MODEL,
-    useFactory: (connection: Connection) => connection.model('Article', BlogArticleSchema),
-    inject: [DB_BLOG_CONNECTION]
-  }
-];
+import { DB_BLOG_CONNECTION } from '../../constants';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [
+    MongooseModule.forFeature([
+      {
+        name: 'BlogArticle',
+        schema: BlogArticleSchema,
+        collection: 'articles'
+      }
+    ], DB_BLOG_CONNECTION)
+  ],
   providers: [
-    ...blogArticlesProviders,
     ArticlesService,
     ArticlesResolver
   ],
   exports: [
-    ...blogArticlesProviders,
     ArticlesService,
     ArticlesResolver
   ]

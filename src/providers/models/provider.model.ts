@@ -1,23 +1,22 @@
 import { Field, ObjectType, ID, Int } from '@nestjs/graphql';
-import { Video } from '../../videos/interfaces/video.interface';
 
 @ObjectType()
 export class Provider {
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   id: string;
 
-  @Field( type => Int )
+  @Field( type => Int , { nullable: true })
   order: number;
 
-  @Field()
+  @Field({ nullable: true })
   code: string;
 
-  @Field()
+  @Field({ nullable: true })
   title: string;
 
-  @Field()
+  @Field({ nullable: true })
   description: string;
 
-  @Field(type => [ID])
+  @Field(type => [ID], { nullable: true })
   videos: string[]
 }

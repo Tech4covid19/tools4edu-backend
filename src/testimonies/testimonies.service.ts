@@ -1,14 +1,14 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { Testimony } from './interfaces/testimony.interface';
 import { CreateTestimonyDto, UpdateTestimonyDto } from './dto/testimony.dto';
-import { TESTIMONIES_MODEL } from '../constants';
+import { InjectModel } from '@nestjs/mongoose';
 
 
 @Injectable()
 export class TestimoniesService {
   constructor(
-    @Inject(TESTIMONIES_MODEL)
+    @InjectModel('Testimony')
     private testimonyModel: Model<Testimony>
   ) {}
 

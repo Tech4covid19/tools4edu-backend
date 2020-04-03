@@ -1,9 +1,7 @@
-import { Args, ID, Parent, Query, ResolveField, ResolveProperty, Resolver } from '@nestjs/graphql';
+import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { ProvidersService } from './providers.service';
 import { Provider } from './models/provider.model';
 import { Video } from '../videos/models/video.model';
-import { filter } from 'rxjs/operators';
-import { Video as IVideo } from '../videos/interfaces/video.interface';
 
 @Resolver(of => Provider)
 export class ProvidersResolver {
@@ -11,12 +9,12 @@ export class ProvidersResolver {
     private providersService: ProvidersService
   ) {}
 
-  @Query(returns => Provider)
+  @Query(returns => Provider, { nullable: true })
   async provider(@Args('code') code: string) {
     return this.providersService.findOneByCode(code);
   }
 
-  @ResolveField('videos', type => [Video], {})
+  @ResolveField('videos', type => [Video], {nullable: true})
   async resolveVideos(
     @Parent() provider: Provider,
     @Args('stakeholder', { nullable: true }) stakeholderCode: string

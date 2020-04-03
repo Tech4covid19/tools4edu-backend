@@ -1,32 +1,27 @@
 import { Module } from '@nestjs/common';
 import { VideosService } from './videos.service';
 import { VideosResolver } from './videos.resolver';
-import { DB_LANDINGPAGE_CONNECTION, VIDEOS_MODEL } from '../constants';
-import { Connection } from 'mongoose';
+import { DB_LANDINGPAGE_CONNECTION } from '../constants';
 import { VideoSchema } from './schemas/videos.schema';
-import { DatabaseModule } from '../database/database.module';
 import { StakeholdersModule } from '../stakeholders/stakeholders.module';
-
-export const videosProviders = [
-  {
-    provide: VIDEOS_MODEL,
-    useFactory: (connection: Connection) => connection.model('Video', VideoSchema),
-    inject: [DB_LANDINGPAGE_CONNECTION]
-  }
-];
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
-    DatabaseModule,
+    MongooseModule.forFeature([
+      {
+        name: 'Video',
+        schema: VideoSchema,
+        collection: 'videos'
+      }
+    ], DB_LANDINGPAGE_CONNECTION),
     StakeholdersModule
   ],
   providers: [
-    ...videosProviders,
     VideosService,
     VideosResolver
   ],
   exports: [
-    ...videosProviders,
     VideosService,
     VideosResolver
   ]

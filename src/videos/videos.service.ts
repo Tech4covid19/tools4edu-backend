@@ -1,14 +1,14 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { VIDEOS_MODEL } from '../constants';
+import { Injectable } from '@nestjs/common';
 import { Video } from './interfaces/video.interface';
 import { Model, Types } from 'mongoose';
 import { CreateVideoDto, UpdateVideoDto } from './dto/video.dto';
 import { StakeholdersService } from '../stakeholders/stakeholders.service';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class VideosService {
   constructor(
-    @Inject(VIDEOS_MODEL)
+    @InjectModel('Video')
     private videoModel: Model<Video>,
     private stakeholdersService: StakeholdersService
   ) {}
