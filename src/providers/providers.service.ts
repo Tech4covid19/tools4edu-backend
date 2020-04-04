@@ -19,6 +19,8 @@ export class ProvidersService {
   }
 
   async findAll(query = {}): Promise<Provider[]> {
+    const providers = await this.providerModel.find(query).exec();
+    console.log('pro', providers);
     return await this.providerModel.find(query).exec();
   }
 
@@ -40,6 +42,8 @@ export class ProvidersService {
     const provider = await this.providerModel.findOne({code: providerCode})
       .populate(populateOpts)
       .exec();
+
+    if (!provider) return Promise.resolve(null);
 
     return Promise.resolve(provider.videos);
   }
