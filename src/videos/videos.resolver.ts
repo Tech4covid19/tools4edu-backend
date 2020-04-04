@@ -19,7 +19,19 @@ export class VideosResolver {
   }
 
   @Query(returns => [Video])
-  async videos() {
+  async videos(
+    @Args('stakeholder', { nullable: true }) stakeholderCode: string
+  ) {
+
+    if (stakeholderCode) {
+      const foundStakeholder = await this.stakeholdersService.findOneByQuery({ code: stakeholderCode });
+
+      if (foundStakeholder) {
+        return this.videosService.findAll({ stakeholder: foundStakeholder['id'] })
+      }
+    }
+
+
     return this.videosService.findAll()
   }
 
