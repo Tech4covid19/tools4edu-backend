@@ -11,6 +11,7 @@ import { TestimoniesModule } from './testimonies/testimonies.module';
 import { FaqsModule } from './faqs/faqs.module';
 import { BlogModule } from './blog/blog.module';
 import { DatabaseModule } from './database/database.module';
+import { ContentTagsModule } from './contentTags/contentTags.module';
 
 @Module({
   imports: [
@@ -22,14 +23,6 @@ import { DatabaseModule } from './database/database.module';
     GraphQLModule.forRootAsync({
       useFactory: () => {
         // const schemaModuleOptions: Partial<GqlModuleOptions> = {};
-
-        // // If we are in development, we want to generate the schema.graphql
-        // if (process.env.NODE_ENV !== 'production' || process.env.IS_OFFLINE) {
-        //   schemaModuleOptions.autoSchemaFile = './schema.gql';
-        // } else {
-        //   // For production, the file should be generated
-        //   schemaModuleOptions.typePaths = ['dist/*.gql'];
-        // }
 
         return {
           context: ({ req }) => ({ req }),
@@ -47,6 +40,7 @@ import { DatabaseModule } from './database/database.module';
     ProvidersModule,
     TestimoniesModule,
     FaqsModule,
+    ContentTagsModule,
     BlogModule
   ],
   controllers: [AppController],
