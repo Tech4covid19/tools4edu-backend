@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { IContentItem } from './interfaces/content-item.interface';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CreateContentItemDto, UpdateContentItemDto } from './dto/content-item.dto';
 
 @Injectable()
@@ -12,7 +12,26 @@ export class ContentItemsService {
   ) {}
 
   async create(createContentItemDto: CreateContentItemDto): Promise<IContentItem> {
-    const createdContentItem = new this.contentItemModel(createContentItemDto);
+    const stakeholders = createContentItemDto.stakeholderIds
+      .map(id => Types.ObjectId(id)) || [];
+
+    const providers = createContentItemDto.providerIds
+      .map(id => Types.ObjectId(id)) || [];
+
+    const tags = createContentItemDto.tagIds
+      .map(id => Types.ObjectId(id)) || [];
+
+    delete createContentItemDto.stakeholderIds;
+    delete createContentItemDto.providerIds;
+    delete createContentItemDto.tagIds;
+
+    const createdContentItem = new this.contentItemModel({
+      ...createContentItemDto,
+      stakeholders: stakeholders,
+      providers: providers,
+      tags: tags
+    });
+
     return createdContentItem.save();
   }
 

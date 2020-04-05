@@ -7,9 +7,9 @@ export class CreateContentItemDto {
   readonly text?: string;
   readonly slug?: string;
   readonly published: boolean;
-  readonly stakeholderIds?: string[];
-  readonly providerIds?: string[];
-  readonly tagIds?: string[];
+  stakeholderIds?: string[];
+  providerIds?: string[];
+  tagIds?: string[];
 }
 
 export class UpdateContentItemDto {
@@ -21,7 +21,7 @@ export class UpdateContentItemDto {
   readonly text?: string;
   readonly slug?: string;
   readonly published?: boolean;
-  readonly stakeholderIds?: string[];
-  readonly providerIds?: string[];
-  readonly tagIds?: string[];
+  stakeholderIds?: string[];
+  providerIds?: string[];
+  tagIds?: string[];
 }
