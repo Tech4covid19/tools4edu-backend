@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { ContentTag } from './interfaces/contentTag.interface';
+import { ContentTag } from './interfaces/content-tag.interface';
 import { Model } from 'mongoose';
-import { CreateContentTagDto, UpdateContentTagDto } from './dto/contentTag.dto';
+import { CreateContentTagDto, UpdateContentTagDto } from './dto/content-tag.dto';
 
 @Injectable()
 export class ContentTagsService {

@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { DB_LANDINGPAGE_CONNECTION } from '../constants';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ContentTagsService } from './contentTags.service';
-import { ContentTagsResolver } from './contentTags.resolver';
-import { ContentTagSchema } from './schemas/contentTags.schema';
+import { ContentTagsService } from './content-tags.service';
+import { ContentTagsResolver } from './content-tags.resolver';
+import { ContentTagSchema } from './schemas/content-tags.schema';
 
 
 @Module({

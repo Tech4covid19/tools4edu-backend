@@ -36,7 +36,12 @@ export class ContentItemsService {
     return this.contentItemModel.findByIdAndUpdate(id, contentItem, { new: true });
   }
 
-  async countDocs(): Promise<number> {
-    return this.contentItemModel.countDocuments();
+  async countDocs(query): Promise<number> {
+    return new Promise((resolve, reject) => {
+      this.contentItemModel.countDocuments(query, (err, result) => {
+        if (err) reject(err);
+        resolve(result);
+      })
+    });
   }
 }

@@ -14,7 +14,7 @@ export interface IContentItem extends Document {
   readonly updatedAt?: Date;
   readonly slug?: string;
   readonly published: boolean;
-  readonly stakeholders: Stakeholder[];
-  readonly providers: Provider[];
-  readonly tags: ContentTag[];
+  readonly stakeholders: Stakeholder[] | string[];
+  readonly providers: Provider[] | string[];
+  readonly tags: ContentTag[] | string[];
 }

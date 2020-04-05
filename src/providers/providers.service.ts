@@ -19,8 +19,6 @@ export class ProvidersService {
   }
 
   async findAll(query = {}): Promise<Provider[]> {
-    const providers = await this.providerModel.find(query).exec();
-    console.log('pro', providers);
     return await this.providerModel.find(query).exec();
   }
 

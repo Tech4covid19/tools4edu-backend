@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { ContentTag, ContentTagInputCreate, ContentTagInputUpdate } from './models/contentTag.model';
-import { ContentTagsService } from './contentTags.service';
+import { ContentTag, ContentTagInputCreate, ContentTagInputUpdate } from './models/content-tag.model';
+import { ContentTagsService } from './content-tags.service';
 import { UseGuards } from '@nestjs/common';
 import { GraphQLAuthGuard } from '../auth/auth.guard';
 

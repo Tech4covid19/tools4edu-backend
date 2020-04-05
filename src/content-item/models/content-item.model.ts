@@ -21,6 +21,9 @@ export class ContentItem {
   videoTime?: string;
 
   @Field({ nullable: true })
+  imageUrl?: string;
+
+  @Field({ nullable: true })
   title?: string;
 
   @Field({ nullable: true })
@@ -47,7 +50,7 @@ export class ContentItem {
   @Field(() => [ContentTag], { nullable: 'itemsAndList' })
   tags?: IContentTag[];
 
-  @Field(() => Int)
+  @Field(() => Int, { nullable: true })
   totalCount: number;
 }
 
@@ -62,6 +65,9 @@ export class ContentItemInputCreate {
 
   @Field({ nullable: true })
   videoTime?: string;
+
+  @Field({ nullable: true })
+  imageUrl?: string;
 
   @Field()
   title: string;
@@ -95,6 +101,9 @@ export class ContentItemInputUpdate {
 
   @Field({ nullable: true })
   videoTime?: string;
+
+  @Field({ nullable: true })
+  imageUrl?: string;
 
   @Field({ nullable: true })
   title?: string;
