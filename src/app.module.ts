@@ -11,7 +11,8 @@ import { TestimoniesModule } from './testimonies/testimonies.module';
 import { FaqsModule } from './faqs/faqs.module';
 import { BlogModule } from './blog/blog.module';
 import { DatabaseModule } from './database/database.module';
-import { ContentTagsModule } from './contentTags/contentTags.module';
+import { ContentTagsModule } from './content-tags/content-tags.module';
+import { ContentItemsModule } from './content-item/content-items.module';
 
 @Module({
   imports: [
@@ -41,7 +42,8 @@ import { ContentTagsModule } from './contentTags/contentTags.module';
     TestimoniesModule,
     FaqsModule,
     ContentTagsModule,
-    BlogModule
+    BlogModule,
+    ContentItemsModule
   ],
   controllers: [AppController],
   providers: [AppService],
