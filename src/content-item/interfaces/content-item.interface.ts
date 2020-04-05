@@ -1,6 +1,7 @@
 import { Document } from 'mongoose';
 import { Stakeholder } from '../../stakeholders/interfaces/stakeholder.interface';
 import { Provider } from '../../providers/interfaces/provider.interface';
+import { ContentTag } from '../../content-tags/interfaces/content-tag.interface';
 
 export interface IContentItem extends Document {
   readonly order: number;
@@ -11,7 +12,9 @@ export interface IContentItem extends Document {
   readonly text?: string;
   readonly createdAt?: Date;
   readonly updatedAt?: Date;
+  readonly slug?: string;
   readonly published: boolean;
-  readonly stakeholder: Stakeholder;
-  readonly provider: Provider;
+  readonly stakeholders: Stakeholder[];
+  readonly providers: Provider[];
+  readonly tags: ContentTag[];
 }
