@@ -8,6 +8,11 @@ export class StakeholdersResolver {
     private stakeholdersService: StakeholdersService
   ) {}
 
+  @Query(() => [Stakeholder])
+  async stakeholders() {
+    return this.stakeholdersService.findAll();
+  }
+
   @Query(returns => Stakeholder)
   async stakeholder(
     @Args('code') code: string
