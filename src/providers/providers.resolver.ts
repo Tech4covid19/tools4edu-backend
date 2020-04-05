@@ -9,6 +9,17 @@ export class ProvidersResolver {
     private providersService: ProvidersService
   ) {}
 
+  @Query(returns => [Provider], { nullable: true })
+  async providers(@Args('code', { nullable: true }) code: string) {
+    let query = {};
+
+    if (code) {
+      query = { code: code }
+    }
+
+    return this.providersService.findAll(query);
+  }
+
   @Query(returns => Provider, { nullable: true })
   async provider(@Args('code') code: string) {
     return this.providersService.findOneByCode(code);
@@ -22,6 +33,8 @@ export class ProvidersResolver {
     let filteredVideos = [];
 
     const providerVideos = await this.providersService.getVideosForProvider(provider.code, !!stakeholderCode);
+
+    if (!providerVideos) return Promise.resolve([]);
 
     if (stakeholderCode) {
       filteredVideos = providerVideos.filter(video => video.stakeholder['code'] === stakeholderCode)
