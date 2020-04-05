@@ -16,5 +16,9 @@ export const ContentTagSchema = new mongoose.Schema({
   published: {
     type: Boolean,
     required: true
+  },
+  order: {
+    type: Number,
+    required: false
   }
 });

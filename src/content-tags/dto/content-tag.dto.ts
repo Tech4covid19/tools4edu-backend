@@ -3,6 +3,7 @@ export class CreateContentTagDto {
   readonly description: string;
   readonly code: string;
   readonly published: boolean;
+  readonly order: number;
 }
 
 export class UpdateContentTagDto {
@@ -10,4 +11,5 @@ export class UpdateContentTagDto {
   readonly description?: string;
   readonly code?: string;
   readonly published?: boolean;
+  readonly order?: number;
 }

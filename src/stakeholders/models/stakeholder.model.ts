@@ -1,4 +1,4 @@
-import { Field, ID, InputType, ObjectType } from '@nestjs/graphql';
+import { Field, ID, InputType, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class Stakeholder {
@@ -13,6 +13,9 @@ export class Stakeholder {
 
   @Field({ nullable: true })
   description?: string;
+
+  @Field(() => Int, { nullable: true })
+  order?: number;
 }
 
 @InputType()
@@ -25,4 +28,7 @@ export class StakeholderInputCreate {
 
   @Field({ nullable: true })
   description?: string;
+
+  @Field(() => Int, { nullable: true })
+  order?: number;
 }

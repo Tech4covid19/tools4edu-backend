@@ -1,4 +1,4 @@
-import { Field, ID, InputType, ObjectType } from '@nestjs/graphql';
+import { Field, ID, InputType, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class ContentTag {
@@ -16,6 +16,9 @@ export class ContentTag {
 
   @Field({ nullable: true })
   published: boolean;
+
+  @Field(() => Int, { nullable: true })
+  order: number;
 }
 
 @InputType()
@@ -31,6 +34,9 @@ export class ContentTagInputCreate {
 
   @Field()
   published: boolean;
+
+  @Field(() => Int, { nullable: true })
+  order: number;
 }
 
 @InputType()
@@ -46,4 +52,7 @@ export class ContentTagInputUpdate {
 
   @Field({ nullable: true })
   published: boolean;
+
+  @Field(() => Int, { nullable: true })
+  order: number;
 }

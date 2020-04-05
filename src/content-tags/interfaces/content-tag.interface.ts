@@ -5,4 +5,5 @@ export interface ContentTag extends Document {
   readonly description: string;
   readonly code: string;
   readonly published: boolean;
+  readonly order: number;
 }
