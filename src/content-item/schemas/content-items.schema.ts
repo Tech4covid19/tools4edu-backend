@@ -1,6 +1,10 @@
 import { Schema } from 'mongoose';
 
 export const ContentItemSchema = new Schema({
+  type: {
+    type: String,
+    required: true
+  },
   order: {
     type: Number,
     required: false

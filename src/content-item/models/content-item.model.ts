@@ -11,6 +11,9 @@ export class ContentItem {
   @Field(() => ID, { nullable: true })
   id?: string;
 
+  @Field({ nullable: true })
+  type?: string;
+
   @Field(() => Int, { nullable: true })
   order?: number;
 
@@ -40,6 +43,12 @@ export class ContentItem {
 
   @Field()
   published?: boolean;
+
+  @Field(() => Stakeholder, { nullable: true })
+  stakeholder?: IStakeholder;
+
+  @Field(() => Provider, { nullable: true })
+  provider?: IProvider;
 
   @Field(() => [Stakeholder], { nullable: 'itemsAndList' })
   stakeholders?: IStakeholder[];

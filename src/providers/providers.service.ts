@@ -50,6 +50,10 @@ export class ProvidersService {
     return this.providerModel.findOne({ code: code });
   }
 
+  async findOneByQuery(query = {}): Promise<Provider> {
+    return this.providerModel.findOne(query);
+  }
+
   async delete(id: string): Promise<Provider> {
     return this.providerModel.findByIdAndRemove(id)
   }

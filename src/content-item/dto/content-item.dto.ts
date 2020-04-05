@@ -1,4 +1,5 @@
 export class CreateContentItemDto {
+  readonly type?: string;
   readonly order?: number;
   readonly videoUrl?: string;
   readonly videoTime?: string;
@@ -13,6 +14,7 @@ export class CreateContentItemDto {
 }
 
 export class UpdateContentItemDto {
+  readonly type?: string;
   readonly order?: number;
   readonly videoUrl?: string;
   readonly videoTime?: string;

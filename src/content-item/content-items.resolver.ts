@@ -58,30 +58,55 @@ export class ContentItemsResolver {
     return this.contentItemsService.findAll(query, limit, startAt);
   }
 
-  @ResolveField('totalCount', () => Int, { nullable: true })
-  async totalCount(
-    @Parent() contentItem: IContentItem
+  @Query(() => Int, { nullable: true })
+  async contentItemTotalCount(
+    @Args('stakeholderIds', { type: () => [String], nullable: 'itemsAndList' }) stakeholderIds: string[],
+    @Args('providerIds', { type: () => [String], nullable: 'itemsAndList' }) providerIds: string[],
+    @Args('tagIds', { type: () => [String], nullable: 'itemsAndList' }) tagIds: string[]
   ) {
     const query = getFilterQuery(
-      contentItem.stakeholders,
-      contentItem.providers,
-      contentItem.tags
+      stakeholderIds,
+      providerIds,
+      tagIds
     );
+
     return this.contentItemsService.countDocs(query);
   }
 
-  @ResolveField('stakeholders', () => [Stakeholder], { nullable: true })
+  @ResolveField('stakeholder', () => Stakeholder, { nullable: true })
+  async resolveStakeholder(
+    @Parent() contentItem: IContentItem
+  ) {
+    if (contentItem.type === 'CONTENT-TUTORIAL-VIDEO' && contentItem.stakeholders && contentItem.stakeholders.length > 0) {
+      return this.stakeholdersService.findOneByQuery({ _id: contentItem.stakeholders[0] })
+    } else {
+      return null;
+    }
+  }
+
+  @ResolveField('stakeholders', () => [Stakeholder],{ nullable: 'itemsAndList' })
   async resolveStakeholders(
     @Parent() contentItem: IContentItem
   ) {
     if (contentItem.stakeholders && contentItem.stakeholders.length > 0) {
       return this.stakeholdersService.findAll({ _id: { $in: contentItem.stakeholders }})
     } else {
-      return []
+      return null
     }
   }
 
-  @ResolveField('providers', () => [Provider], { nullable: true })
+  @ResolveField('provider', () => Provider, { nullable: true })
+  async resolveProvider(
+    @Parent() contentItem: IContentItem
+  ) {
+    if (contentItem.type === 'CONTENT-TUTORIAL-VIDEO' && contentItem.providers && contentItem.providers.length > 0) {
+      return this.providersService.findOneByQuery({ _id: contentItem.providers[0] })
+    } else {
+      return null;
+    }
+  }
+
+  @ResolveField('providers', () => [Provider], { nullable: 'itemsAndList' })
   async resolveProviders(
     @Parent() contentItem: IContentItem
   ) {
@@ -92,7 +117,7 @@ export class ContentItemsResolver {
     }
   }
 
-  @ResolveField('tags', () => [ContentTag], { nullable: true })
+  @ResolveField('tags', () => [ContentTag], { nullable: 'itemsAndList' })
   async resolveTags(
     @Parent() contentItem: IContentItem
   ) {

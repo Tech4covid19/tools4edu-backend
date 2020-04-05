@@ -4,6 +4,7 @@ import { Provider } from '../../providers/interfaces/provider.interface';
 import { ContentTag } from '../../content-tags/interfaces/content-tag.interface';
 
 export interface IContentItem extends Document {
+  readonly type: string;
   readonly order: number;
   readonly videoUrl?: string;
   readonly videoTime?: string;
