@@ -4,6 +4,7 @@ export class CreateFaqDto {
   readonly answer: string;
   readonly published: boolean;
   readonly stakeholderId: string;
+  readonly providerId: string;
 }
 
 export class UpdateFaqDto {
@@ -12,4 +13,5 @@ export class UpdateFaqDto {
   readonly answer?: string;
   readonly published?: boolean;
   readonly stakeholderId?: string;
+  readonly providerId?: string;
 }

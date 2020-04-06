@@ -1,17 +1,34 @@
 import { Faq, FaqInputCreate, FaqInputUpdate } from './models/faq.model';
-import { Args, ID, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, ID, Int, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Types } from 'mongoose';
 import { FaqsService } from './faqs.service';
 import { StakeholdersService } from '../stakeholders/stakeholders.service';
 import { Stakeholder } from '../stakeholders/models/stakeholder.model';
 import { UseGuards } from '@nestjs/common';
 import { GraphQLAuthGuard } from '../auth/auth.guard';
+import { Provider } from '../providers/models/provider.model';
+import { ProvidersService } from '../providers/providers.service';
+
+function getFilterQuery(stakeholderId, providerId) {
+  let query = {};
+
+  if (stakeholderId)
+    query = Object.assign({}, query, { stakeholder: {$eq: Types.ObjectId(stakeholderId)} });
+
+  if (providerId)
+    query = Object.assign({}, query, { provider: {$eq: Types.ObjectId(providerId)} });
+
+  console.log('query', query)
+
+  return query;
+}
 
 @Resolver(of => Faq)
 export class FaqsResolver {
   constructor(
     private faqsService: FaqsService,
-    private stakeholdersService: StakeholdersService
+    private stakeholdersService: StakeholdersService,
+    private providersService: ProvidersService
   ) {}
 
   @Query(returns => Faq)
@@ -23,21 +40,49 @@ export class FaqsResolver {
 
   @Query(returns => [Faq])
   async faqs(
-    @Args('stakeholder', { nullable: true }) stakeholderCode: string
+    @Args('stakeholderId', { nullable: true }) stakeholderId: string,
+    @Args('providerId', { nullable: true }) providerId: string,
+    @Args('limit', { nullable: true }) limit: number,
+    @Args('startAt', { nullable: true }) startAt: number
   ) {
-    const foundStakeholder = await this.stakeholdersService.findOneByQuery({ code: stakeholderCode });
+    const query = getFilterQuery(
+      stakeholderId,
+      providerId
+    );
 
-    if (foundStakeholder) {
-      return this.faqsService.findAll({ stakeholder: Types.ObjectId(foundStakeholder.id) });
-    } else {
-      return this.faqsService.findAll();
-    }
-
+    return this.faqsService.findAll(query, limit, startAt);
   }
 
-  @ResolveField('stakeholder', type => Stakeholder, {})
+  @Query(() => Int, { nullable: true })
+  async faqTotalCount(
+    @Args('stakeholderId', { nullable: true }) stakeholderId: string,
+    @Args('providerId', { nullable: true }) providerId: string
+  ) {
+    const query = getFilterQuery(
+      stakeholderId,
+      providerId
+    );
+
+    return this.faqsService.countDocs(query)
+  }
+
+  @ResolveField('stakeholder', type => Stakeholder, { nullable: true })
   async resolveStakeholder(@Parent() faq: Faq) {
-    return this.stakeholdersService.findOne(faq.stakeholder)
+    if (faq.stakeholder) {
+      return this.stakeholdersService.findOneByQuery({_id: faq.stakeholder})
+    } else {
+      return null;
+    }
+  }
+
+  @ResolveField('provider', type => Provider, { nullable: true })
+  async resolveProvider(@Parent() faq: Faq) {
+    if (faq.provider) {
+      return this.providersService.findOneByQuery({_id: faq.provider})
+    } else {
+      return null;
+    }
+
   }
 
   @UseGuards(GraphQLAuthGuard)

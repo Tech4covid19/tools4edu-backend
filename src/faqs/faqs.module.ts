@@ -5,6 +5,7 @@ import { FaqSchema } from './schemas/faqs.schema';
 import { FaqsService } from './faqs.service';
 import { FaqsResolver } from './faqs.resolver';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ProvidersModule } from '../providers/providers.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { MongooseModule } from '@nestjs/mongoose';
         collection: 'faqs'
       }
     ], DB_LANDINGPAGE_CONNECTION),
-    StakeholdersModule
+    StakeholdersModule,
+    ProvidersModule
   ],
   providers: [
     FaqsService,

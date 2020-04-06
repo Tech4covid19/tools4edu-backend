@@ -27,8 +27,12 @@ export class FaqsService {
     }
   }
 
-  async findAll(query = {}): Promise<Faq[]> {
-    return await this.faqModel.find(query).exec();
+  async findAll(query = {}, limit = 20, startAt = 0): Promise<Faq[]> {
+    return await this.faqModel
+      .find(query)
+      .skip(startAt)
+      .limit(limit)
+      .exec();
   }
 
   async findOne(id: string): Promise<Faq> {
@@ -41,5 +45,14 @@ export class FaqsService {
 
   async update(id: string, faq: UpdateFaqDto): Promise<Faq> {
     return this.faqModel.findByIdAndUpdate(id, faq, { new: true });
+  }
+
+  async countDocs(query): Promise<number> {
+    return new Promise((resolve, reject) => {
+      this.faqModel.countDocuments(query, (err, result) => {
+        if (err) reject(err);
+        resolve(result);
+      })
+    });
   }
 }

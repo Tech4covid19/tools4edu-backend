@@ -19,6 +19,9 @@ export class Faq {
 
   @Field(type => ID)
   stakeholder: string;
+
+  @Field(type => ID)
+  provider: string;
 }
 
 @InputType()
@@ -40,6 +43,9 @@ export class FaqInputCreate {
 
   @Field()
   stakeholderId: string;
+
+  @Field()
+  providerId: string;
 }
 
 @InputType()
@@ -61,4 +67,7 @@ export class FaqInputUpdate {
 
   @Field({ nullable: true })
   stakeholderId: string;
+
+  @Field({ nullable: true })
+  providerId: string;
 }

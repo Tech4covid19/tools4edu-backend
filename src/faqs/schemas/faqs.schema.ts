@@ -20,5 +20,8 @@ export const FaqSchema = new mongoose.Schema({
   },
   stakeholder: {
     type: mongoose.Schema.Types.ObjectId, ref: 'Stakeholder'
+  },
+  provider: {
+    type: mongoose.Schema.Types.ObjectId, ref: 'Provider'
   }
 });
