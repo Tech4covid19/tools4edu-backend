@@ -18,8 +18,6 @@ function getFilterQuery(stakeholderId, providerId) {
   if (providerId)
     query = Object.assign({}, query, { provider: {$eq: Types.ObjectId(providerId)} });
 
-  console.log('query', query)
-
   return query;
 }
 
