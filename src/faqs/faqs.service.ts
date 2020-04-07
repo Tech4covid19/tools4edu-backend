@@ -27,7 +27,7 @@ export class FaqsService {
     }
   }
 
-  async findAll(query = {}, limit = 20, startAt = 0): Promise<Faq[]> {
+  async findAll(query = {}, limit = 100, startAt = 0): Promise<Faq[]> {
     return await this.faqModel
       .find(query)
       .skip(startAt)

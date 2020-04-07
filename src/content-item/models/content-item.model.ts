@@ -58,9 +58,6 @@ export class ContentItem {
 
   @Field(() => [ContentTag], { nullable: 'itemsAndList' })
   tags?: IContentTag[];
-
-  @Field(() => Int, { nullable: true })
-  totalCount: number;
 }
 
 @InputType()
@@ -68,6 +65,9 @@ export class ContentItemInputCreate {
 
   @Field(() => Int, { nullable: true })
   order?: number;
+
+  @Field({ nullable: true })
+  type?: string;
 
   @Field({ nullable: true })
   videoUrl?: string;
@@ -104,6 +104,9 @@ export class ContentItemInputCreate {
 export class ContentItemInputUpdate {
   @Field(() => Int, { nullable: true })
   order?: number;
+
+  @Field({ nullable: true })
+  type?: string;
 
   @Field({ nullable: true })
   videoUrl?: string;

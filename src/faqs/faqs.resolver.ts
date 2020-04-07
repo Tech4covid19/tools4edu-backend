@@ -9,14 +9,14 @@ import { GraphQLAuthGuard } from '../auth/auth.guard';
 import { Provider } from '../providers/models/provider.model';
 import { ProvidersService } from '../providers/providers.service';
 
-function getFilterQuery(stakeholderId, providerId) {
+function getFilterQuery(stakeholderIds, providerIds) {
   let query = {};
 
-  if (stakeholderId)
-    query = Object.assign({}, query, { stakeholder: {$eq: Types.ObjectId(stakeholderId)} });
+  if (stakeholderIds)
+    query = Object.assign({}, query, { stakeholder: { $in: stakeholderIds.map(s => Types.ObjectId(s)) } });
 
-  if (providerId)
-    query = Object.assign({}, query, { provider: {$eq: Types.ObjectId(providerId)} });
+  if (providerIds)
+    query = Object.assign({}, query, { provider: { $in: providerIds.map(p => Types.ObjectId(p)) } });
 
   return query;
 }
@@ -38,14 +38,14 @@ export class FaqsResolver {
 
   @Query(returns => [Faq])
   async faqs(
-    @Args('stakeholderId', { nullable: true }) stakeholderId: string,
-    @Args('providerId', { nullable: true }) providerId: string,
+    @Args('stakeholderIds', { type: () => [String], nullable: true }) stakeholdersIds: string[],
+    @Args('providerIds', { type: () => [String], nullable: true }) providerIds: string[],
     @Args('limit', { nullable: true }) limit: number,
     @Args('startAt', { nullable: true }) startAt: number
   ) {
     const query = getFilterQuery(
-      stakeholderId,
-      providerId
+      stakeholdersIds,
+      providerIds
     );
 
     return this.faqsService.findAll(query, limit, startAt);
@@ -53,12 +53,12 @@ export class FaqsResolver {
 
   @Query(() => Int, { nullable: true })
   async faqTotalCount(
-    @Args('stakeholderId', { nullable: true }) stakeholderId: string,
-    @Args('providerId', { nullable: true }) providerId: string
+    @Args('stakeholderIds', { type: () => [String], nullable: true }) stakeholderIds: string,
+    @Args('providerIds', { type: () => [String], nullable: true }) providerIds: string
   ) {
     const query = getFilterQuery(
-      stakeholderId,
-      providerId
+      stakeholderIds,
+      providerIds
     );
 
     return this.faqsService.countDocs(query)
