@@ -9,6 +9,9 @@ export class BlogArticle {
   title: string;
 
   @Field()
+  summary: string;
+
+  @Field()
   author: string;
 
   @Field(() => [String])
@@ -36,6 +39,9 @@ export class BlogArticleInputCreate {
   title: string;
 
   @Field()
+  summary: string;
+
+  @Field()
   author: string;
 
   @Field(() => [String])
@@ -53,21 +59,24 @@ export class BlogArticleInputCreate {
 
 @InputType()
 export class BlogArticleInputUpdate {
-  @Field()
+  @Field({ nullable: true })
   title?: string;
 
-  @Field()
+  @Field({ nullable: true })
+  summary?: string;
+
+  @Field({ nullable: true })
   author?: string;
 
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true })
   images?: string[];
 
-  @Field()
+  @Field({ nullable: true })
   text?: string;
 
-  @Field()
+  @Field({ nullable: true })
   slug?: string;
 
-  @Field()
+  @Field({ nullable: true })
   published?: boolean;
 }

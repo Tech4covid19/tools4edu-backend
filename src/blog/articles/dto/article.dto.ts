@@ -1,5 +1,6 @@
 export class CreateBlogArticleDto {
   readonly title: string;
+  readonly summary: string;
   readonly author: string;
   readonly images: string[];
   readonly text: string;
@@ -9,6 +10,7 @@ export class CreateBlogArticleDto {
 
 export class UpdateBlogArticleDto {
   readonly title?: string;
+  readonly summary?: string;
   readonly author?: string;
   readonly images?: string[];
   readonly text?: string;
