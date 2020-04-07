@@ -1,6 +1,7 @@
-import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import { Resolver, Query, Args, Mutation, ResolveField, Parent } from '@nestjs/graphql';
 import { BlogArticle, BlogArticleInputCreate, BlogArticleInputUpdate } from './models/article.model';
 import { ArticlesService } from './articles.service';
+import { Types } from 'mongoose';
 
 
 @Resolver(of => BlogArticle)
@@ -19,6 +20,11 @@ export class ArticlesResolver {
     @Args('slug') slug: string
   ) {
     return this.articlesService.findOneByQuery({ slug: slug })
+  }
+
+  @ResolveField('createdAt', () => Date, { nullable: true })
+  async createdAtResolver(@Parent() blogArticle: BlogArticle) {
+    return Types.ObjectId(blogArticle.id).getTimestamp();
   }
 
   @Mutation(returns => BlogArticle, { nullable: true })

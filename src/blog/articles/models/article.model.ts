@@ -28,9 +28,6 @@ export class BlogArticle {
 
   @Field()
   createdAt: Date;
-
-  @Field()
-  updatedAt: Date;
 }
 
 @InputType()
