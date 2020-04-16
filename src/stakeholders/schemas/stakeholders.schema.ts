@@ -16,5 +16,10 @@ export const StakeholderSchema = new mongoose.Schema({
   order: {
     type: Number,
     required: false
+  },
+  published: {
+    type: Boolean,
+    required: true,
+    default: false
   }
 });

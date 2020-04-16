@@ -16,6 +16,9 @@ export class Stakeholder {
 
   @Field(() => Int, { nullable: true })
   order?: number;
+
+  @Field({ nullable: true })
+  published?: boolean;
 }
 
 @InputType()
@@ -31,4 +34,25 @@ export class StakeholderInputCreate {
 
   @Field(() => Int, { nullable: true })
   order?: number;
+
+  @Field()
+  published: boolean;
+}
+
+@InputType()
+export class StakeholderInputUpdate {
+  @Field({ nullable: true })
+  code: string;
+
+  @Field({ nullable: true })
+  title: string;
+
+  @Field({ nullable: true })
+  description?: string;
+
+  @Field(() => Int, { nullable: true })
+  order?: number;
+
+  @Field({ nullable: true })
+  published: boolean;
 }

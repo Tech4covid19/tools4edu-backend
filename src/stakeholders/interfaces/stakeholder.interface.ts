@@ -6,4 +6,5 @@ export interface Stakeholder extends Document {
   readonly title: string;
   readonly description: string;
   readonly order: number;
+  readonly published: boolean;
 }

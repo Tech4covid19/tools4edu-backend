@@ -17,6 +17,6 @@ export class Provider {
   @Field({ nullable: true })
   description: string;
 
-  @Field(type => [ID], { nullable: true })
-  videos: string[]
+  @Field({ nullable: true })
+  published?: boolean;
 }

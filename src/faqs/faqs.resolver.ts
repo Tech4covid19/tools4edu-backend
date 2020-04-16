@@ -1,5 +1,5 @@
 import { Faq, FaqInputCreate, FaqInputUpdate } from './models/faq.model';
-import { Args, Context, ID, Int, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, ID, Int, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Types } from 'mongoose';
 import { FaqsService } from './faqs.service';
 import { StakeholdersService } from '../stakeholders/stakeholders.service';
@@ -8,7 +8,6 @@ import { UseGuards } from '@nestjs/common';
 import { GraphQLAuthGuard } from '../auth/auth.guard';
 import { Provider } from '../providers/models/provider.model';
 import { ProvidersService } from '../providers/providers.service';
-import { AuditGuard } from '../audit/audit.guard';
 
 function getFilterQuery(stakeholderIds, providerIds) {
   let query = {};

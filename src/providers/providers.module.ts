@@ -3,7 +3,6 @@ import { ProvidersResolver } from './providers.resolver';
 import { ProvidersService } from './providers.service';
 import { DB_LANDINGPAGE_CONNECTION } from '../constants';
 import { ProviderSchema } from './schemas/providers.schema';
-import { VideosModule } from '../videos/videos.module';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
@@ -14,8 +13,7 @@ import { MongooseModule } from '@nestjs/mongoose';
         schema: ProviderSchema,
         collection: 'providers'
       }
-    ], DB_LANDINGPAGE_CONNECTION),
-    VideosModule
+    ], DB_LANDINGPAGE_CONNECTION)
   ],
   providers: [
     ProvidersService,

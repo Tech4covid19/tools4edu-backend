@@ -50,8 +50,8 @@ interface Claim {
   client_id: string;
 }
 
-const cognitoPoolId = 'us-east-1_p1GLIzxBk';
-const cognitoIssuer = `https://cognito-idp.us-east-1.amazonaws.com/${cognitoPoolId}`;
+const cognitoPoolId = 'eu-central-1_lna1DYJrH';
+const cognitoIssuer = `https://cognito-idp.us-central-1.amazonaws.com/${cognitoPoolId}`;
 
 let cacheKeys: MapOfKidToPublicKey | undefined;
 const getPublicKeys = async (): Promise<MapOfKidToPublicKey> => {

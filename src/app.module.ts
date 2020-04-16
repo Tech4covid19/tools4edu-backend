@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
-import { VideosModule } from './videos/videos.module';
 import { StakeholdersModule } from './stakeholders/stakeholders.module';
 import { ProvidersModule } from './providers/providers.module';
 import { ConfigModule } from '@nestjs/config';
@@ -38,7 +37,6 @@ import { AuditModule } from './audit/audit.module';
     DatabaseModule,
     AuthModule,
     AuditModule,
-    VideosModule,
     StakeholdersModule,
     ProvidersModule,
     TestimoniesModule,

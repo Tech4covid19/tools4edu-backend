@@ -3,4 +3,5 @@ export class CreateStakeholderDto {
   readonly title: string;
   readonly description: string;
   readonly order: number;
+  readonly published: boolean;
 }

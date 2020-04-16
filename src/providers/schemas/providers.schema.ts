@@ -17,9 +17,9 @@ export const ProviderSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  videos: [
-    {
-      type: [mongoose.Schema.Types.ObjectId], ref: 'Video'
-    }
-  ]
+  published: {
+    type: Boolean,
+    required: true,
+    default: false
+  }
 });
