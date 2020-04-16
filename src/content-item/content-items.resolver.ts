@@ -8,6 +8,8 @@ import { Stakeholder } from '../stakeholders/models/stakeholder.model';
 import { Provider } from '../providers/models/provider.model';
 import { ContentTag } from '../content-tags/models/content-tag.model';
 import { IContentItem } from './interfaces/content-item.interface';
+import { UseGuards } from '@nestjs/common';
+import { GraphQLAuthGuard } from '../auth/auth.guard';
 
 function getFilterQuery(stakeholderIds, providerIds, tagIds) {
   let query = {};
@@ -128,6 +130,7 @@ export class ContentItemsResolver {
     }
   }
 
+  @UseGuards(GraphQLAuthGuard)
   @Mutation(() => ContentItem, { nullable: true })
   async contentItemCreate(
     @Args('input') contentItemCreate: ContentItemInputCreate
@@ -135,6 +138,7 @@ export class ContentItemsResolver {
     return this.contentItemsService.create(contentItemCreate)
   }
 
+  @UseGuards(GraphQLAuthGuard)
   @Mutation(() => ContentItem, { nullable: true })
   async contentItemUpdate(
     @Args('id') id: string,
@@ -143,6 +147,7 @@ export class ContentItemsResolver {
     return this.contentItemsService.update(id, contentItem);
   }
 
+  @UseGuards(GraphQLAuthGuard)
   @Mutation(() => ContentItem, { nullable: true })
   async contentItemDelete(
     @Args('id') id: string

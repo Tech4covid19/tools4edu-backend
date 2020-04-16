@@ -3,7 +3,7 @@ import { BlogArticle, BlogArticleInputCreate, BlogArticleInputUpdate } from './m
 import { ArticlesService } from './articles.service';
 import { Types } from 'mongoose';
 import { UseGuards } from '@nestjs/common';
-import { AuditGuard } from '../../audit/audit.guard';
+import { GraphQLAuthGuard } from '../../auth/auth.guard';
 
 
 @Resolver(of => BlogArticle)
@@ -12,7 +12,6 @@ export class ArticlesResolver {
     private articlesService: ArticlesService
   ) {}
 
-  @UseGuards(AuditGuard)
   @Query(returns => [BlogArticle])
   async blogArticles() {
     return this.articlesService.findAll()
@@ -30,6 +29,7 @@ export class ArticlesResolver {
     return Types.ObjectId(blogArticle.id).getTimestamp();
   }
 
+  @UseGuards(GraphQLAuthGuard)
   @Mutation(returns => BlogArticle, { nullable: true })
   async blogArticleCreate(
     @Args('input') blogArticleInput: BlogArticleInputCreate
@@ -37,6 +37,7 @@ export class ArticlesResolver {
     return this.articlesService.create(blogArticleInput);
   }
 
+  @UseGuards(GraphQLAuthGuard)
   @Mutation(returns => BlogArticle, { nullable: true })
   async blogArticleUpdate(
     @Args('id') id: string,
@@ -45,6 +46,7 @@ export class ArticlesResolver {
     return this.articlesService.update(id, blogArticleInput)
   }
 
+  @UseGuards(GraphQLAuthGuard)
   @Mutation(returns => BlogArticle, { nullable: true })
   async blogArticleDelete(
     @Args('id') id: string
