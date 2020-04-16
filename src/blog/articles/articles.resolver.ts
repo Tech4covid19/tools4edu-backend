@@ -2,6 +2,8 @@ import { Resolver, Query, Args, Mutation, ResolveField, Parent } from '@nestjs/g
 import { BlogArticle, BlogArticleInputCreate, BlogArticleInputUpdate } from './models/article.model';
 import { ArticlesService } from './articles.service';
 import { Types } from 'mongoose';
+import { UseGuards } from '@nestjs/common';
+import { AuditGuard } from '../../audit/audit.guard';
 
 
 @Resolver(of => BlogArticle)
@@ -10,6 +12,7 @@ export class ArticlesResolver {
     private articlesService: ArticlesService
   ) {}
 
+  @UseGuards(AuditGuard)
   @Query(returns => [BlogArticle])
   async blogArticles() {
     return this.articlesService.findAll()

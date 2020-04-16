@@ -13,6 +13,7 @@ import { BlogModule } from './blog/blog.module';
 import { DatabaseModule } from './database/database.module';
 import { ContentTagsModule } from './content-tags/content-tags.module';
 import { ContentItemsModule } from './content-item/content-items.module';
+import { AuditModule } from './audit/audit.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { ContentItemsModule } from './content-item/content-items.module';
     }),
     DatabaseModule,
     AuthModule,
+    AuditModule,
     VideosModule,
     StakeholdersModule,
     ProvidersModule,

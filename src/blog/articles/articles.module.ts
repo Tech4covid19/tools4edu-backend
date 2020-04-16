@@ -5,6 +5,8 @@ import { ArticlesResolver } from './articles.resolver';
 import { BlogArticleSchema } from './schemas/articles.schema';
 import { DB_BLOG_CONNECTION } from '../../constants';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AuditModule } from '../../audit/audit.module';
+import { AuthModule } from '../../auth/auth.module';
 
 @Module({
   imports: [
@@ -14,7 +16,9 @@ import { MongooseModule } from '@nestjs/mongoose';
         schema: BlogArticleSchema,
         collection: 'articles'
       }
-    ], DB_BLOG_CONNECTION)
+    ], DB_BLOG_CONNECTION),
+    AuditModule,
+    AuthModule
   ],
   providers: [
     ArticlesService,
