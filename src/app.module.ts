@@ -36,7 +36,6 @@ import { AuditModule } from './audit/audit.module';
     }),
     DatabaseModule,
     AuthModule,
-    AuditModule,
     StakeholdersModule,
     ProvidersModule,
     TestimoniesModule,

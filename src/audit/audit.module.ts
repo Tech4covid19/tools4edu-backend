@@ -13,8 +13,7 @@ import { AuthModule } from '../auth/auth.module';
         schema: AuditLogSchema,
         collection: 'auditLog'
       }
-    ], DB_LANDINGPAGE_CONNECTION),
-    AuthModule,
+    ], DB_LANDINGPAGE_CONNECTION)
   ],
   providers: [
     AuditService

@@ -6,6 +6,13 @@ import { CreateAuditLogDto } from './dto/audit.dto';
 
 @Injectable()
 export class AuditService {
+
+  public readonly LOGIN_SUCCESS_ACTION = 'LOGIN_SUCCESS';
+  public readonly LOGIN_ERROR_ACTION = 'LOGIN_ERROR';
+  public readonly UPDATE_ACTION = 'UPDATE';
+  public readonly CREATE_ACTION = 'CREATE';
+  public readonly DELETE_ACTION = 'DELETE';
+
   constructor(
     @InjectModel('AuditLog')
     private auditLogModel: Model<AuditLog>
@@ -23,7 +30,5 @@ export class AuditService {
   async findOneByQuery(query: {}): Promise<AuditLog> {
     return this.auditLogModel.findOne(query);
   }
-
-
 
 }

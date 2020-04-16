@@ -1,7 +1,9 @@
+import { AuditService } from '../audit/audit.service';
+
 declare const global: any;
 global.fetch = require('node-fetch');
 
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import {
   AuthenticationDetails,
   CognitoUser,
@@ -14,7 +16,9 @@ import { AuthNewpasswordDto } from './dto/auth-newpassword.dto';
 export class AuthService {
   private readonly userPool: CognitoUserPool;
 
-  constructor() {
+  constructor(
+    private auditService: AuditService
+  ) {
     this.userPool = new CognitoUserPool({
       UserPoolId: 'eu-central-1_lna1DYJrH',
       ClientId: '7841u4b3rt1e3iomm1l15dg5ff',
@@ -38,15 +42,28 @@ export class AuthService {
 
     return new Promise((resolve, reject: any) => {
       return user.authenticateUser(authDetails, {
-        onSuccess: (result) => {
+        onSuccess: async (result) => {
+
+          await this.auditService.create({
+            action: this.auditService.LOGIN_SUCCESS_ACTION,
+            userEmail: email
+          });
+
           resolve({
             email: email,
             accessToken: result.getAccessToken().getJwtToken(),
             refreshToken: result.getRefreshToken().getToken()
           });
         },
-        onFailure: ((err) => {
+        onFailure: ( async (err) => {
           console.log('err', err);
+
+          await this.auditService.create({
+            action: this.auditService.LOGIN_ERROR_ACTION,
+            userEmail: email,
+            stacktrace: JSON.stringify(err)
+          });
+
           reject(err)
         }),
         newPasswordRequired: ((authDetails) => {
@@ -93,15 +110,27 @@ export class AuthService {
           delete authDetails.email_verified;
 
           return user.completeNewPasswordChallenge(newPassword, { email: email }, {
-            onSuccess: (result) => {
+            onSuccess: async (result) => {
+              await this.auditService.create({
+                action: this.auditService.LOGIN_SUCCESS_ACTION,
+                userEmail: email
+              });
+
               resolve({
                 email: email,
                 accessToken: result.getAccessToken().getJwtToken(),
                 refreshToken: result.getRefreshToken().getToken()
               })
             },
-            onFailure: (err) => {
+            onFailure: async (err) => {
               console.log('err new pass', err);
+
+              await this.auditService.create({
+                action: this.auditService.LOGIN_ERROR_ACTION,
+                userEmail: email,
+                stacktrace: JSON.stringify(err)
+              });
+
               reject(err)
             }
           });

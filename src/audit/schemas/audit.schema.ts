@@ -1,13 +1,17 @@
 import * as mongoose from 'mongoose';
 
 export const AuditLogSchema = new mongoose.Schema({
-  mutation: {
+  action: {
     type: String,
     required: true
   },
+  mutation: {
+    type: String,
+    required: false
+  },
   params: {
     type: String,
-    required: true
+    required: false
   },
   previousState: {
     type: String,
@@ -15,14 +19,14 @@ export const AuditLogSchema = new mongoose.Schema({
   },
   newState: {
     type: String,
-    required: true
-  },
-  userId: {
-    type: String,
-    required: true
+    required: false
   },
   userEmail: {
     type: String,
     required: true
+  },
+  stacktrace: {
+    type: String,
+    required: false
   }
 }, { timestamps: true });
