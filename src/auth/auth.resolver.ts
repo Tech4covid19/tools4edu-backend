@@ -12,11 +12,6 @@ export class AuthResolver {
     private authService: AuthService
   ) {}
 
-  @Query(returns => Auth)
-  async currentUser(@Args('token') token: string) {
-    return await this.authService.getCurrentUser(token);
-  }
-
   @Mutation(returns => Auth)
   async login(@Args('user', {type: () => LoginInput}) userData: AuthLoginDto): Promise<any> {
     return await this.authService.login(userData)
@@ -24,6 +19,7 @@ export class AuthResolver {
 
   @Mutation(returns => Auth)
   async completeNewPasswordChallenge(@Args('user', { type: () => NewPasswordInput}) userData: AuthNewpasswordDto): Promise<any> {
+    console.log('here', userData);
     return await this.authService.completeNewPasswordChallenge(userData)
   }
 }

@@ -7,4 +7,7 @@ export class NewPasswordInput {
 
   @Field()
   newPassword: string;
+
+  @Field()
+  oldPassword: string;
 }

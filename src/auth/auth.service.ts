@@ -86,10 +86,11 @@ export class AuthService {
   }
 
   async completeNewPasswordChallenge(userDetails: AuthNewpasswordDto) {
-    const { email, newPassword } = userDetails;
+    const { email, newPassword, oldPassword } = userDetails;
 
     const authDetails = new AuthenticationDetails({
-      Username: email
+      Username: email,
+      Password: oldPassword
     });
 
     const userData = {
@@ -99,27 +100,38 @@ export class AuthService {
 
     const user = new CognitoUser(userData);
 
-    return new Promise((resolve, reject) => {
-      return user.completeNewPasswordChallenge(newPassword, authDetails, {
+    return new Promise((resolve, reject: any) => {
+      return user.authenticateUser(authDetails, {
         onSuccess: (result) => {
-          console.log('result new pass challenge', result);
-          resolve({
-            email: email,
-            accessToken: result.getAccessToken().getJwtToken(),
-            refreshToken: result.getRefreshToken().getToken()
-          })
+          console.log('on success', result)
         },
-        onFailure: (err) => {
+        onFailure: ((err) => {
+          console.log('err', err);
           reject(err)
-        }
-      });
-    })
+        }),
+        newPasswordRequired: ((authDetails) => {
+
+          delete authDetails.email_verified;
+
+          return user.completeNewPasswordChallenge(newPassword, { email: email }, {
+            onSuccess: (result) => {
+              resolve({
+                email: email,
+                accessToken: result.getAccessToken().getJwtToken(),
+                refreshToken: result.getRefreshToken().getToken()
+              })
+            },
+            onFailure: (err) => {
+              console.log('err new pass', err);
+              reject(err)
+            }
+          });
+
+        })
+      })
+    });
+
   }
-
-  async getCurrentUser(token) {
-
-  }
-
 
 }
 
