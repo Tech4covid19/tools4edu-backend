@@ -8,9 +8,12 @@ export class Auth {
   @Field({ nullable: true })
   email?: string;
 
-  @Field()
-  accessToken: string;
+  @Field({ nullable: true })
+  accessToken?: string;
 
-  @Field()
-  refreshToken: string;
+  @Field({ nullable: true })
+  refreshToken?: string;
+
+  @Field({ nullable: true })
+  needPasswordChange?: boolean;
 }

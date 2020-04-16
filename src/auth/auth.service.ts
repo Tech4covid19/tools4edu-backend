@@ -12,6 +12,7 @@ import {
 } from 'amazon-cognito-identity-js';
 import { AuthRegisterDto } from './dto/auth-register.dto';
 import { AuthLoginDto } from './dto/auth-login.dto';
+import { AuthNewpasswordDto } from './dto/auth-newpassword.dto';
 
 @Injectable()
 export class AuthService {
@@ -60,6 +61,7 @@ export class AuthService {
       return user.authenticateUser(authDetails, {
         onSuccess: (result) => {
           resolve({
+            email: email,
             accessToken: result.getAccessToken().getJwtToken(),
             refreshToken: result.getRefreshToken().getToken()
           });
@@ -68,23 +70,54 @@ export class AuthService {
           console.log('err', err);
           reject(err)
         }),
-        // newPasswordRequired: ((authDetails) => {
-        //
-        //   delete authDetails.email_verified;
-        //
-        //   user.completeNewPasswordChallenge('[ENTER PASSWORD HERE]', authDetails, {
-        //     onSuccess: (result) => {
-        //       console.log('result new pass challenge', result)
-        //       resolve(result)
-        //     },
-        //     onFailure: (err) => {
-        //       reject(err)
-        //     }
-        //   });
-        //   return null;
-        // })
+        newPasswordRequired: ((authDetails) => {
+
+          delete authDetails.email_verified;
+
+          resolve({
+            email: email,
+            needPasswordChange: true
+          });
+
+          return null;
+        })
       })
     })
+  }
+
+  async completeNewPasswordChallenge(userDetails: AuthNewpasswordDto) {
+    const { email, newPassword } = userDetails;
+
+    const authDetails = new AuthenticationDetails({
+      Username: email
+    });
+
+    const userData = {
+      Username: email,
+      Pool: this.userPool
+    };
+
+    const user = new CognitoUser(userData);
+
+    return new Promise((resolve, reject) => {
+      return user.completeNewPasswordChallenge(newPassword, authDetails, {
+        onSuccess: (result) => {
+          console.log('result new pass challenge', result);
+          resolve({
+            email: email,
+            accessToken: result.getAccessToken().getJwtToken(),
+            refreshToken: result.getRefreshToken().getToken()
+          })
+        },
+        onFailure: (err) => {
+          reject(err)
+        }
+      });
+    })
+  }
+
+  async getCurrentUser(token) {
+
   }
 
 
