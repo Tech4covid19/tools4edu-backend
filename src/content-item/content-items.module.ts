@@ -7,6 +7,7 @@ import { ProvidersModule } from '../providers/providers.module';
 import { ContentTagsModule } from '../content-tags/content-tags.module';
 import { ContentItemsService } from './content-items.service';
 import { ContentItemsResolver } from './content-items.resolver';
+import { AuditModule } from '../audit/audit.module';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { ContentItemsResolver } from './content-items.resolver';
     ], DB_LANDINGPAGE_CONNECTION),
     StakeholdersModule,
     ProvidersModule,
-    ContentTagsModule
+    ContentTagsModule,
+    AuditModule
   ],
   providers: [
     ContentItemsService,

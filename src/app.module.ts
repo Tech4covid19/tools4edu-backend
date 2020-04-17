@@ -14,6 +14,15 @@ import { ContentTagsModule } from './content-tags/content-tags.module';
 import { ContentItemsModule } from './content-item/content-items.module';
 import { AuditModule } from './audit/audit.module';
 
+function extractToken (req) {
+  if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+    return req.headers.authorization.split(' ')[1];
+  } else if (req.query && req.query.token) {
+    return req.query.token;
+  }
+  return null;
+}
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -26,7 +35,10 @@ import { AuditModule } from './audit/audit.module';
         // const schemaModuleOptions: Partial<GqlModuleOptions> = {};
 
         return {
-          context: ({ req }) => ({ req }),
+          context: ({ req }) => ({
+            req,
+            token: extractToken(req)
+          }),
           playground: true, // Allow playground in production
           introspection: true, // Allow introspection in production
           autoSchemaFile: true,

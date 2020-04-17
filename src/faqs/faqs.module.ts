@@ -6,6 +6,7 @@ import { FaqsService } from './faqs.service';
 import { FaqsResolver } from './faqs.resolver';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ProvidersModule } from '../providers/providers.module';
+import { AuditModule } from '../audit/audit.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { ProvidersModule } from '../providers/providers.module';
       }
     ], DB_LANDINGPAGE_CONNECTION),
     StakeholdersModule,
-    ProvidersModule
+    ProvidersModule,
+    AuditModule
   ],
   providers: [
     FaqsService,

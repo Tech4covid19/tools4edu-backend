@@ -51,7 +51,7 @@ interface Claim {
 }
 
 const cognitoPoolId = 'eu-central-1_lna1DYJrH';
-const cognitoIssuer = `https://cognito-idp.us-central-1.amazonaws.com/${cognitoPoolId}`;
+const cognitoIssuer = `https://cognito-idp.eu-central-1.amazonaws.com/${cognitoPoolId}`;
 
 let cacheKeys: MapOfKidToPublicKey | undefined;
 const getPublicKeys = async (): Promise<MapOfKidToPublicKey> => {
@@ -98,7 +98,7 @@ const verifyHandler = async (request: ClaimVerifyRequest): Promise<ClaimVerifyRe
     if (claim.token_use !== 'access') {
       throw new Error('claim use is not access');
     }
-    console.log(`claim confirmed for ${claim.username}`);
+    console.log(`claim confirmed for`, claim);
     result = {userName: claim.username, clientId: claim.client_id, isValid: true};
   } catch (error) {
     result = {userName: '', clientId: '', error, isValid: false};

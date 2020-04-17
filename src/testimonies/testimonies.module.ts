@@ -4,6 +4,7 @@ import { TestimoniesResolver } from './testimonies.resolver';
 import { TestimonySchema } from './schemas/testimonies.schema';
 import { DB_LANDINGPAGE_CONNECTION } from '../constants';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AuditModule } from '../audit/audit.module';
 
 
 @Module({
@@ -14,7 +15,8 @@ import { MongooseModule } from '@nestjs/mongoose';
         schema: TestimonySchema,
         collection: 'testimonies'
       }
-    ], DB_LANDINGPAGE_CONNECTION)
+    ], DB_LANDINGPAGE_CONNECTION),
+    AuditModule
   ],
   providers: [
     TestimoniesService,

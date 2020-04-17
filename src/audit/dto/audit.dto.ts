@@ -8,4 +8,5 @@ export class CreateAuditLogDto {
   readonly createdAt?: Date;
   readonly updatedAt?: Date;
   readonly stacktrace?: string;
+  readonly token?: string;
 }
