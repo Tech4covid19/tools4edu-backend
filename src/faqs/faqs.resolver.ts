@@ -1,5 +1,5 @@
 import { Faq, FaqInputCreate, FaqInputUpdate } from './models/faq.model';
-import { Args, ID, Int, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Context, ID, Info, Int, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Types } from 'mongoose';
 import { FaqsService } from './faqs.service';
 import { StakeholdersService } from '../stakeholders/stakeholders.service';
@@ -8,6 +8,7 @@ import { UseGuards } from '@nestjs/common';
 import { GraphQLAuthGuard } from '../auth/auth.guard';
 import { Provider } from '../providers/models/provider.model';
 import { ProvidersService } from '../providers/providers.service';
+import { AuditService } from '../audit/audit.service';
 
 function getFilterQuery(stakeholderIds, providerIds) {
   let query = {};
@@ -26,7 +27,8 @@ export class FaqsResolver {
   constructor(
     private faqsService: FaqsService,
     private stakeholdersService: StakeholdersService,
-    private providersService: ProvidersService
+    private providersService: ProvidersService,
+    private auditService: AuditService
   ) {}
 
   @Query(returns => Faq)
@@ -86,8 +88,20 @@ export class FaqsResolver {
   @UseGuards(GraphQLAuthGuard)
   @Mutation(returns => Faq, { nullable: true })
   async faqCreate(
-    @Args('input') faqInputCreate: FaqInputCreate
+    @Args('input') faqInputCreate: FaqInputCreate,
+    @Info() info: any,
+    @Context() context: any
   ) {
+
+    await this.auditService.create({
+      action: this.auditService.CREATE_ACTION,
+      mutation: info.fieldName,
+      params: JSON.stringify({ faqInputCreate }),
+      previousState: '',
+      newState: JSON.stringify(faqInputCreate),
+      token: context.token
+    });
+
     return this.faqsService.create(faqInputCreate)
   }
 
@@ -95,16 +109,42 @@ export class FaqsResolver {
   @Mutation(returns => Faq, { nullable: true })
   async faqUpdate(
     @Args('id') id: string,
-    @Args('input') faqInputUpdate: FaqInputUpdate
+    @Args('input') faqInputUpdate: FaqInputUpdate,
+    @Info() info: any,
+    @Context() context: any
   ) {
+    const previousState = await this.faqsService.findOne(id);
+
+    await this.auditService.create({
+      action: this.auditService.UPDATE_ACTION,
+      mutation: info.fieldName,
+      params: JSON.stringify({ id, faqInputUpdate }),
+      previousState: JSON.stringify(previousState),
+      newState: JSON.stringify(Object.assign({}, previousState, faqInputUpdate)),
+      token: context.token
+    });
+
     return this.faqsService.update(id, faqInputUpdate)
   }
 
   @UseGuards(GraphQLAuthGuard)
   @Mutation(returns => Faq, { nullable: true })
   async faqDelete(
-    @Args('id') id: string
+    @Args('id') id: string,
+    @Info() info: any,
+    @Context() context: any
   ) {
+    const previousState = await this.faqsService.findOne(id);
+
+    await this.auditService.create({
+      action: this.auditService.DELETE_ACTION,
+      mutation: info.fieldName,
+      params: '',
+      previousState: JSON.stringify(previousState),
+      newState: '',
+      token: context.token
+    });
+
     return this.faqsService.delete(id)
   }
 }
