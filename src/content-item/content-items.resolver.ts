@@ -141,7 +141,7 @@ export class ContentItemsResolver {
   ) {
 
     await this.auditService.create({
-      action: this.auditService.UPDATE_ACTION,
+      action: this.auditService.CREATE_ACTION,
       mutation: info.fieldName,
       params: JSON.stringify({ contentItemCreate }),
       previousState: '',
