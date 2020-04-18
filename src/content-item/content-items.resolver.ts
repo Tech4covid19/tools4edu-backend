@@ -1,4 +1,4 @@
-import { Args, Info, Int, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Context, Info, Int, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { ContentItem, ContentItemInputCreate, ContentItemInputUpdate } from './models/content-item.model';
 import { ContentItemsService } from './content-items.service';
 import { StakeholdersService } from '../stakeholders/stakeholders.service';
@@ -10,6 +10,7 @@ import { ContentTag } from '../content-tags/models/content-tag.model';
 import { IContentItem } from './interfaces/content-item.interface';
 import { UseGuards } from '@nestjs/common';
 import { GraphQLAuthGuard } from '../auth/auth.guard';
+import { AuditService } from '../audit/audit.service';
 
 function getFilterQuery(stakeholderIds, providerIds, tagIds) {
   let query = {};
@@ -32,7 +33,8 @@ export class ContentItemsResolver {
     private contentItemsService: ContentItemsService,
     private stakeholdersService: StakeholdersService,
     private providersService: ProvidersService,
-    private contentTagsService: ContentTagsService
+    private contentTagsService: ContentTagsService,
+    private auditService: AuditService
   ) {}
 
   @Query(() => ContentItem)
@@ -133,8 +135,20 @@ export class ContentItemsResolver {
   @UseGuards(GraphQLAuthGuard)
   @Mutation(() => ContentItem, { nullable: true })
   async contentItemCreate(
-    @Args('input') contentItemCreate: ContentItemInputCreate
+    @Args('input') contentItemCreate: ContentItemInputCreate,
+    @Info() info: any,
+    @Context() context: any
   ) {
+
+    await this.auditService.create({
+      action: this.auditService.UPDATE_ACTION,
+      mutation: info.fieldName,
+      params: JSON.stringify({ contentItemCreate }),
+      previousState: '',
+      newState: JSON.stringify( contentItemCreate ),
+      token: context.token
+    });
+
     return this.contentItemsService.create(contentItemCreate)
   }
 
@@ -142,16 +156,43 @@ export class ContentItemsResolver {
   @Mutation(() => ContentItem, { nullable: true })
   async contentItemUpdate(
     @Args('id') id: string,
-    @Args('input') contentItem: ContentItemInputUpdate
+    @Args('input') contentItem: ContentItemInputUpdate,
+    @Info() info: any,
+    @Context() context: any
   ) {
+    const previousState = await this.contentItemsService.findOneByQuery({ _id: id });
+
+    await this.auditService.create({
+      action: this.auditService.UPDATE_ACTION,
+      mutation: info.fieldName,
+      params: JSON.stringify({ id, contentItem }),
+      previousState: JSON.stringify(previousState),
+      newState: JSON.stringify(Object.assign({}, previousState, contentItem)),
+      token: context.token
+    });
+
     return this.contentItemsService.update(id, contentItem);
   }
 
   @UseGuards(GraphQLAuthGuard)
   @Mutation(() => ContentItem, { nullable: true })
   async contentItemDelete(
-    @Args('id') id: string
+    @Args('id') id: string,
+    @Info() info: any,
+    @Context() context: any
   ) {
+
+    const previousState = await this.contentItemsService.findOneByQuery({ _id: id });
+
+    await this.auditService.create({
+      action: this.auditService.DELETE_ACTION,
+      mutation: info.fieldName,
+      params: '',
+      previousState: JSON.stringify(previousState),
+      newState: '',
+      token: context.token
+    });
+
     return this.contentItemsService.delete(id)
   }
 }
