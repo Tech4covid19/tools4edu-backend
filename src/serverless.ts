@@ -9,16 +9,16 @@ import { AppModule } from './app.module';
 export async function bootstrap() {
   const expressApp = express();
   const adapter = new ExpressAdapter(expressApp);
-  const app = await NestFactory.create(AppModule, adapter, {
-    cors: {
-      "origin": "*",
-      "methods": "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-      "preflightContinue": false,
-      "optionsSuccessStatus": 204,
-      "allowedHeaders": ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
-      "credentials": true
-    }
-  });
+  const app = await NestFactory.create(AppModule, adapter);
+
+  app.enableCors({
+    "origin": "*",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+    "preflightContinue": false,
+    "optionsSuccessStatus": 204,
+    "allowedHeaders": ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
+    "credentials": true
+  })
 
   await app.init();
   return serverless.createServer(expressApp);

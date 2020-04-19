@@ -23,7 +23,7 @@ export const AuditLogSchema = new mongoose.Schema({
   },
   userEmail: {
     type: String,
-    required: true
+    required: false
   },
   stacktrace: {
     type: String,

@@ -1,7 +1,7 @@
 import { Document } from 'mongoose';
 
 export interface AuditLog extends Document {
-  action?: string;
+  action: string;
   mutation?: string;
   params?: string;
   previousState?: string;
