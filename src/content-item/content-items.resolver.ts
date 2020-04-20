@@ -51,13 +51,18 @@ export class ContentItemsResolver {
     @Args('stakeholderIds', { type: () => [String], nullable: 'itemsAndList' }) stakeholderIds: string[],
     @Args('providerIds', { type: () => [String], nullable: 'itemsAndList' }) providerIds: string[],
     @Args('tagIds', { type: () => [String], nullable: 'itemsAndList' }) tagIds: string[],
+    @Args('onlyPublished', { nullable: true }) onlyPublished: boolean
   ) {
 
-    const query = getFilterQuery(
+    let query = getFilterQuery(
       stakeholderIds,
       providerIds,
       tagIds
     );
+
+    if (onlyPublished !== undefined) {
+      query = { ...query, published: onlyPublished }
+    }
 
     return this.contentItemsService.findAll(query, limit, startAt);
   }

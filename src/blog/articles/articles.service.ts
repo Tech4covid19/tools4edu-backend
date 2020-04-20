@@ -17,8 +17,12 @@ export class ArticlesService {
     return createdBlogArticle.save();
   }
 
-  async findAll(query = {}): Promise<BlogArticle[]> {
-    return await this.blogArticleModel.find(query).exec();
+  async findAll(query = {}, limit = 100, startAt= 0 ): Promise<BlogArticle[]> {
+    return await this.blogArticleModel
+      .find(query)
+      .skip(startAt)
+      .limit(limit)
+      .exec();
   }
 
   async findOne(id: string): Promise<BlogArticle> {

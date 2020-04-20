@@ -35,7 +35,7 @@ export class ContentItemsService {
     return createdContentItem.save();
   }
 
-  async findAll(query = {}, limit = 20, startAt = 0): Promise<IContentItem[]> {
+  async findAll(query = {}, limit = 100, startAt = 0): Promise<IContentItem[]> {
     return await this.contentItemModel
       .find(query)
       .skip(startAt)

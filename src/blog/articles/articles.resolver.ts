@@ -24,8 +24,18 @@ export class ArticlesResolver {
   ) {}
 
   @Query(returns => [BlogArticle])
-  async blogArticles() {
-    return this.articlesService.findAll()
+  async blogArticles(
+    @Args('limit', { nullable: true }) limit: number,
+    @Args('startAt', { nullable: true }) startAt: number,
+    @Args('onlyPublished', { nullable: true }) onlyPublished: boolean
+  ) {
+    let query = {}
+
+    if (onlyPublished !== undefined) {
+      query = { published: onlyPublished }
+    }
+
+    return this.articlesService.findAll(query, limit, startAt);
   }
 
   @Query(returns => BlogArticle)
