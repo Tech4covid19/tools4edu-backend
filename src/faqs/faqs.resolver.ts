@@ -40,15 +40,20 @@ export class FaqsResolver {
 
   @Query(returns => [Faq])
   async faqs(
-    @Args('stakeholderIds', { type: () => [String], nullable: true }) stakeholdersIds: string[],
-    @Args('providerIds', { type: () => [String], nullable: true }) providerIds: string[],
+    @Args('stakeholderIds', { type: () => [String], nullable: 'itemsAndList' }) stakeholdersIds: string[],
+    @Args('providerIds', { type: () => [String], nullable: 'itemsAndList' }) providerIds: string[],
     @Args('limit', { nullable: true }) limit: number,
-    @Args('startAt', { nullable: true }) startAt: number
+    @Args('startAt', { nullable: true }) startAt: number,
+    @Args('onlyPublished', { nullable: true }) onlyPublished: boolean
   ) {
-    const query = getFilterQuery(
+    let query = getFilterQuery(
       stakeholdersIds,
       providerIds
     );
+
+    if (onlyPublished !== undefined) {
+      query = { ...query, published: onlyPublished }
+    }
 
     return this.faqsService.findAll(query, limit, startAt);
   }
@@ -56,12 +61,17 @@ export class FaqsResolver {
   @Query(() => Int, { nullable: true })
   async faqTotalCount(
     @Args('stakeholderIds', { type: () => [String], nullable: true }) stakeholderIds: string,
-    @Args('providerIds', { type: () => [String], nullable: true }) providerIds: string
+    @Args('providerIds', { type: () => [String], nullable: true }) providerIds: string,
+    @Args('onlyPublished', { nullable: true }) onlyPublished: boolean
   ) {
-    const query = getFilterQuery(
+    let query = getFilterQuery(
       stakeholderIds,
       providerIds
     );
+
+    if (onlyPublished !== undefined) {
+      query = { ...query, published: onlyPublished }
+    }
 
     return this.faqsService.countDocs(query)
   }
