@@ -13,10 +13,10 @@ import { AuditService } from '../audit/audit.service';
 function getFilterQuery(stakeholderIds, providerIds) {
   let query = {};
 
-  if (stakeholderIds)
+  if (stakeholderIds && stakeholderIds.length > 0)
     query = Object.assign({}, query, { stakeholder: { $in: stakeholderIds.map(s => Types.ObjectId(s)) } });
 
-  if (providerIds)
+  if (providerIds && providerIds.length > 0)
     query = Object.assign({}, query, { provider: { $in: providerIds.map(p => Types.ObjectId(p)) } });
 
   return query;

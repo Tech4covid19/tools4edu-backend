@@ -4,10 +4,10 @@ import { DB_BLOG_CONNECTION, DB_LANDINGPAGE_CONNECTION } from '../constants';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(`mongodb+srv://api:BOuvhU6EkjJbDRZe@tools4edu-cluster-bxyju.mongodb.net/landingpage?retryWrites=true&w=majority`, {
+    MongooseModule.forRoot(process.env.NEST_APP_DB_LANDINGPAGE_CONNECTION_STRING, {
       connectionName: DB_LANDINGPAGE_CONNECTION
     }),
-    MongooseModule.forRoot(`mongodb+srv://api:BOuvhU6EkjJbDRZe@tools4edu-cluster-bxyju.mongodb.net/blog?retryWrites=true&w=majority`, {
+    MongooseModule.forRoot(process.env.NEST_APP_DB_BLOG_CONNECTION_STRING, {
       connectionName: DB_BLOG_CONNECTION
     })
   ]

@@ -8,12 +8,19 @@ export class ProvidersResolver {
     private providersService: ProvidersService
   ) {}
 
-  @Query(returns => [Provider], { nullable: true })
-  async providers(@Args('code', { nullable: true }) code: string) {
+  @Query(returns => [Provider], { nullable: 'itemsAndList' })
+  async providers(
+    @Args('code', { nullable: true }) code: string,
+    @Args('onlyPublished', { nullable: true }) onlyPublished: boolean
+  ) {
     let query = {};
 
     if (code) {
       query = { code: code }
+    }
+
+    if (onlyPublished !== undefined) {
+      query = { ...query, published: onlyPublished }
     }
 
     return this.providersService.findAll(query);

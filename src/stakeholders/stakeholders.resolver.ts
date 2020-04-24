@@ -8,9 +8,17 @@ export class StakeholdersResolver {
     private stakeholdersService: StakeholdersService
   ) {}
 
-  @Query(() => [Stakeholder])
-  async stakeholders() {
-    return this.stakeholdersService.findAll();
+  @Query(() => [Stakeholder], { nullable: 'itemsAndList' })
+  async stakeholders(
+    @Args('onlyPublished', { nullable: true }) onlyPublished: boolean
+  ) {
+    let query = {}
+
+    if (onlyPublished !== undefined) {
+      query = { ...query, published: onlyPublished }
+    }
+
+    return this.stakeholdersService.findAll(query);
   }
 
   @Query(returns => Stakeholder)
