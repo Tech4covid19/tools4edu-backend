@@ -10,9 +10,17 @@ export class ContentTagsResolver {
     private contentTagsService: ContentTagsService
   ) {}
 
-  @Query(returns => [ContentTag])
-  async contentTags() {
-    return this.contentTagsService.findAll()
+  @Query(returns => [ContentTag], { nullable: 'itemsAndList'})
+  async contentTags(
+    @Args('onlyPublished', { nullable: true }) onlyPublished: boolean
+  ) {
+    let query = {};
+
+    if (onlyPublished !== undefined) {
+      query = { ...query, published: onlyPublished }
+    }
+
+    return this.contentTagsService.findAll(query)
   }
 
   @UseGuards(GraphQLAuthGuard)
