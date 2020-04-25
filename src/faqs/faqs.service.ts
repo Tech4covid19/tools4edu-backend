@@ -4,26 +4,34 @@ import { Model, Types } from 'mongoose';
 import { CreateFaqDto, UpdateFaqDto } from './dto/faq.dto';
 import { StakeholdersService } from '../stakeholders/stakeholders.service';
 import { InjectModel } from '@nestjs/mongoose';
+import { ProvidersService } from '../providers/providers.service';
 
 @Injectable()
 export class FaqsService {
   constructor(
     @InjectModel('Faq')
     private faqModel: Model<Faq>,
-    private stakeholdersService: StakeholdersService
+    private stakeholdersService: StakeholdersService,
+    private providersService: ProvidersService
   ) {}
 
   async create(createFaqDto: CreateFaqDto): Promise<Faq> {
     const foundStakeholder = await this.stakeholdersService.findOne(createFaqDto.stakeholderId);
+    const foundProvider = await this.providersService.findOneByQuery({ _id: createFaqDto.providerId });
 
-    if (foundStakeholder) {
+    if (foundStakeholder && foundProvider) {
       const createdFaq = new this.faqModel({
         ...createFaqDto,
-        stakeholder: Types.ObjectId(createFaqDto.stakeholderId)
+        stakeholder: Types.ObjectId(createFaqDto.stakeholderId),
+        provider: Types.ObjectId(createFaqDto.providerId)
       });
       return createdFaq.save();
     } else {
-      throw new Error('Stakeholder not found')
+      if (!foundStakeholder) {
+        throw new Error('Stakeholder not found')
+      } else if (!foundProvider) {
+        throw new Error('Provider not found')
+      }
     }
   }
 
@@ -44,7 +52,31 @@ export class FaqsService {
   }
 
   async update(id: string, faq: UpdateFaqDto): Promise<Faq> {
-    return this.faqModel.findByIdAndUpdate(id, faq, { new: true });
+    let foundStakeholder, foundProvider;
+
+    let faqToUpdate = Object.assign({}, faq);
+
+    if (faq.providerId) {
+      foundProvider = await this.providersService.findOneByQuery({ _id: faq.providerId });
+    }
+
+    if (faq.stakeholderId) {
+      foundStakeholder = await this.stakeholdersService.findOne(faq.stakeholderId);
+    }
+
+    if (faq.providerId && foundProvider) {
+      faqToUpdate['provider'] = Types.ObjectId(faq.providerId)
+    } else if (faq.providerId && !foundProvider) {
+      throw new Error('Provider not found');
+    }
+
+    if (faq.stakeholderId && foundStakeholder) {
+      faqToUpdate['stakeholder'] = Types.ObjectId(faq.stakeholderId)
+    } else if (faq.stakeholderId && !foundStakeholder) {
+      throw new Error('Stakeholder not found');
+    }
+
+    return this.faqModel.findByIdAndUpdate(id, faqToUpdate, { new: true });
   }
 
   async countDocs(query): Promise<number> {

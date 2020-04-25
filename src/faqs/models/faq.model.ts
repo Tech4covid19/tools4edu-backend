@@ -26,9 +26,6 @@ export class Faq {
 
 @InputType()
 export class FaqInputCreate {
-  @Field(() => ID)
-  id: string;
-
   @Field( type => Int )
   order: number;
 
