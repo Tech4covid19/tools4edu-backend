@@ -9,9 +9,8 @@ import { GraphQLAuthGuard } from '../auth/auth.guard';
 import { Provider } from '../providers/models/provider.model';
 import { ProvidersService } from '../providers/providers.service';
 import { AuditService } from '../audit/audit.service';
-import { ContentItem } from '../content-item/models/content-item.model';
 
-function getFilterQuery(stakeholderIds, providerIds) {
+function getFilterQuery(stakeholderIds, providerIds, searchTerm?) {
   let query = {};
 
   if (stakeholderIds && stakeholderIds.length > 0)
@@ -19,6 +18,9 @@ function getFilterQuery(stakeholderIds, providerIds) {
 
   if (providerIds && providerIds.length > 0)
     query = Object.assign({}, query, { provider: { $in: providerIds.map(p => Types.ObjectId(p)) } });
+
+  if (searchTerm && searchTerm.length > 0)
+    query = Object.assign({}, query, { $text: { $search: searchTerm }})
 
   return query;
 }
@@ -54,11 +56,13 @@ export class FaqsResolver {
     @Args('providerIds', { type: () => [String], nullable: 'itemsAndList' }) providerIds: string[],
     @Args('limit', { nullable: true }) limit: number,
     @Args('startAt', { nullable: true }) startAt: number,
-    @Args('onlyPublished', { nullable: true }) onlyPublished: boolean
+    @Args('onlyPublished', { nullable: true }) onlyPublished: boolean,
+    @Args('searchTerm', { nullable: true }) searchTerm: string
   ) {
     let query = getFilterQuery(
       stakeholdersIds,
-      providerIds
+      providerIds,
+      searchTerm
     );
 
     if (onlyPublished !== undefined) {

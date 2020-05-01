@@ -37,12 +37,17 @@ export class ArticlesResolver {
   async blogArticles(
     @Args('limit', { nullable: true }) limit: number,
     @Args('startAt', { nullable: true }) startAt: number,
-    @Args('onlyPublished', { nullable: true }) onlyPublished: boolean
+    @Args('onlyPublished', { nullable: true }) onlyPublished: boolean,
+    @Args('searchTerm', { nullable: true }) searchTerm: string
   ) {
     let query = {}
 
     if (onlyPublished !== undefined) {
       query = { published: onlyPublished }
+    }
+
+    if (searchTerm && searchTerm.length > 0) {
+      query = Object.assign({}, query, { $text: { $search: searchTerm }} )
     }
 
     return this.articlesService.findAll(query, limit, startAt);

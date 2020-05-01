@@ -12,7 +12,7 @@ import { UseGuards } from '@nestjs/common';
 import { GraphQLAuthGuard } from '../auth/auth.guard';
 import { AuditService } from '../audit/audit.service';
 
-function getFilterQuery(stakeholderIds, providerIds, tagIds) {
+function getFilterQuery(stakeholderIds, providerIds, tagIds, searchTerm?) {
   let query = {};
 
   if (stakeholderIds && stakeholderIds.length > 0)
@@ -23,6 +23,10 @@ function getFilterQuery(stakeholderIds, providerIds, tagIds) {
 
   if (tagIds && tagIds.length > 0)
     query = Object.assign({}, query, { tags: { $in: tagIds }});
+
+  if (searchTerm && searchTerm.length > 0) {
+    query = Object.assign({}, query, { $text: { $search: searchTerm }});
+  }
 
   return query;
 }
@@ -60,13 +64,15 @@ export class ContentItemsResolver {
     @Args('stakeholderIds', { type: () => [String], nullable: 'itemsAndList' }) stakeholderIds: string[],
     @Args('providerIds', { type: () => [String], nullable: 'itemsAndList' }) providerIds: string[],
     @Args('tagIds', { type: () => [String], nullable: 'itemsAndList' }) tagIds: string[],
-    @Args('onlyPublished', { nullable: true }) onlyPublished: boolean
+    @Args('onlyPublished', { nullable: true }) onlyPublished: boolean,
+    @Args('searchTerm', { nullable: true }) searchTerm: string
   ) {
 
     let query = getFilterQuery(
       stakeholderIds,
       providerIds,
-      tagIds
+      tagIds,
+      searchTerm
     );
 
     if (onlyPublished !== undefined) {
