@@ -15,6 +15,32 @@ export class FaqsService {
     private providersService: ProvidersService
   ) {}
 
+  async search(term: string, limit: number, startAt: number): Promise<any> {
+
+    const aggregations = [
+      {
+        $match: {
+          $text: { $search: term }
+        }
+      },
+      {
+        $addFields: { score: { $meta: "textScore" } }
+      },
+      {
+        $sort: { score: { $meta: "textScore" } }
+      },
+      {
+        $limit: limit
+      },
+      {
+        $skip: startAt
+      }
+    ]
+
+    return this.faqModel
+      .aggregate(aggregations)
+  }
+
   async create(createFaqDto: CreateFaqDto): Promise<Faq> {
     const foundStakeholder = await this.stakeholdersService.findOne(createFaqDto.stakeholderId);
     const foundProvider = await this.providersService.findOneByQuery({ _id: createFaqDto.providerId });

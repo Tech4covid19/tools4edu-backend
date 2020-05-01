@@ -11,6 +11,32 @@ export class ContentItemsService {
     private contentItemModel: Model<IContentItem>
   ) {}
 
+  async search(term: string, limit: number, startAt: number): Promise<any> {
+
+    const aggregations = [
+      {
+        $match: {
+          $text: { $search: term }
+        }
+      },
+      {
+        $addFields: { score: { $meta: "textScore" } }
+      },
+      {
+        $sort: { score: { $meta: "textScore" } }
+      },
+      {
+        $limit: limit
+      },
+      {
+        $skip: startAt
+      }
+    ]
+
+    return this.contentItemModel
+      .aggregate(aggregations)
+  }
+
   async create(createContentItemDto: CreateContentItemDto): Promise<IContentItem> {
     const stakeholders = createContentItemDto.stakeholderIds
       .map(id => Types.ObjectId(id)) || [];

@@ -1,4 +1,4 @@
-import { Field, ID, InputType, Int, ObjectType } from '@nestjs/graphql';
+import { Field, Float, ID, InputType, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class Faq {
@@ -22,6 +22,9 @@ export class Faq {
 
   @Field(type => ID)
   provider: string;
+
+  @Field(() => Float, { nullable: true })
+  score?: number;
 }
 
 @InputType()

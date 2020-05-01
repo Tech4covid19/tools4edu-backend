@@ -1,4 +1,4 @@
-import { Field, ID, InputType, Int, ObjectType } from '@nestjs/graphql';
+import { Field, Float, ID, InputType, Int, ObjectType } from '@nestjs/graphql';
 import { Stakeholder } from '../../stakeholders/models/stakeholder.model';
 import { Stakeholder as IStakeholder } from '../../stakeholders/interfaces/stakeholder.interface';
 import { Provider } from '../../providers/models/provider.model';
@@ -58,6 +58,9 @@ export class ContentItem {
 
   @Field(() => [ContentTag], { nullable: 'itemsAndList' })
   tags?: IContentTag[];
+
+  @Field(() => Float, { nullable: true })
+  score?: number;
 }
 
 @InputType()

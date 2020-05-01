@@ -9,6 +9,7 @@ import { GraphQLAuthGuard } from '../auth/auth.guard';
 import { Provider } from '../providers/models/provider.model';
 import { ProvidersService } from '../providers/providers.service';
 import { AuditService } from '../audit/audit.service';
+import { ContentItem } from '../content-item/models/content-item.model';
 
 function getFilterQuery(stakeholderIds, providerIds) {
   let query = {};
@@ -30,6 +31,15 @@ export class FaqsResolver {
     private providersService: ProvidersService,
     private auditService: AuditService
   ) {}
+
+  @Query(() => [Faq], { nullable: 'itemsAndList' })
+  async faqSearch(
+    @Args('term') term: string,
+    @Args('limit', { nullable: true }) limit: number,
+    @Args('startAt', { nullable: true }) startAt: number
+  ) {
+    return this.faqsService.search(term, limit, startAt);
+  }
 
   @Query(returns => Faq)
   async faq(

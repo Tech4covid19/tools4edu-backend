@@ -37,6 +37,15 @@ export class ContentItemsResolver {
     private auditService: AuditService
   ) {}
 
+  @Query(() => [ContentItem], { nullable: 'itemsAndList' })
+  async contentItemSearch(
+    @Args('term') term: string,
+    @Args('limit', { nullable: true }) limit: number,
+    @Args('startAt', { nullable: true }) startAt: number
+  ) {
+    return this.contentItemsService.search(term, limit, startAt);
+  }
+
   @Query(() => ContentItem)
   async contentItem(
     @Args('slug', { nullable: true }) slug: string

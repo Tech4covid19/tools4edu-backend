@@ -14,6 +14,7 @@ import { Types } from 'mongoose';
 import { UseGuards } from '@nestjs/common';
 import { GraphQLAuthGuard } from '../../auth/auth.guard';
 import { AuditService } from '../../audit/audit.service';
+import { Faq } from '../../faqs/models/faq.model';
 
 
 @Resolver(of => BlogArticle)
@@ -22,6 +23,15 @@ export class ArticlesResolver {
     private articlesService: ArticlesService,
     private auditService: AuditService
   ) {}
+
+  @Query(() => [BlogArticle], { nullable: 'itemsAndList' })
+  async blogArticleSearch(
+    @Args('term') term: string,
+    @Args('limit', { nullable: true }) limit: number,
+    @Args('startAt', { nullable: true }) startAt: number
+  ) {
+    return this.articlesService.search(term, limit, startAt);
+  }
 
   @Query(returns => [BlogArticle])
   async blogArticles(

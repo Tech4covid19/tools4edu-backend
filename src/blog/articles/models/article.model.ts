@@ -1,4 +1,4 @@
-import { Field, ID, InputType, ObjectType } from '@nestjs/graphql';
+import { Field, Float, ID, InputType, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class BlogArticle {
@@ -28,6 +28,9 @@ export class BlogArticle {
 
   @Field()
   createdAt: Date;
+
+  @Field(() => Float, { nullable: true })
+  score?: number;
 }
 
 @InputType()

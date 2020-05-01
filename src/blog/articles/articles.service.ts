@@ -12,6 +12,32 @@ export class ArticlesService {
     private blogArticleModel: Model<BlogArticle>
   ) {}
 
+  async search(term: string, limit: number, startAt: number): Promise<any> {
+
+    const aggregations = [
+      {
+        $match: {
+          $text: { $search: term }
+        }
+      },
+      {
+        $addFields: { score: { $meta: "textScore" } }
+      },
+      {
+        $sort: { score: { $meta: "textScore" } }
+      },
+      {
+        $limit: limit
+      },
+      {
+        $skip: startAt
+      }
+    ]
+
+    return this.blogArticleModel
+      .aggregate(aggregations)
+  }
+
   async create(createBlogArticleDto: CreateBlogArticleDto): Promise<BlogArticle> {
     const createdBlogArticle = new this.blogArticleModel(createBlogArticleDto);
     return createdBlogArticle.save();
