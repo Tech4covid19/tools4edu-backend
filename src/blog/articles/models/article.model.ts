@@ -31,6 +31,9 @@ export class BlogArticle {
 
   @Field(() => Float, { nullable: true })
   score?: number;
+
+  @Field({ nullable: true })
+  videoUrl: string;
 }
 
 @InputType()
@@ -55,6 +58,9 @@ export class BlogArticleInputCreate {
 
   @Field()
   published: boolean;
+
+  @Field({ nullable: true })
+  videoUrl: string;
 }
 
 @InputType()
@@ -79,4 +85,7 @@ export class BlogArticleInputUpdate {
 
   @Field({ nullable: true })
   published?: boolean;
+
+  @Field({ nullable: true })
+  videoUrl: string;
 }

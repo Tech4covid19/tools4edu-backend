@@ -29,5 +29,9 @@ export const BlogArticleSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
     default: false
+  },
+  videoUrl: {
+    type: String,
+    required: false
   }
 }, { timestamps: true });

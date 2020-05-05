@@ -8,4 +8,5 @@ export class BlogArticle extends Document {
   readonly text: string;
   readonly slug: string;
   readonly published: boolean;
+  readonly videoUrl: string;
 }
