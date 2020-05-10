@@ -141,5 +141,9 @@ export class AuthService {
 
   }
 
+  async getCurrentUser() {
+
+  }
+
 }
 
