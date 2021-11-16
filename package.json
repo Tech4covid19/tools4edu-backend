@@ -34,7 +34,7 @@
     "amazon-cognito-identity-js": "^3.2.6",
     "apollo-server-express": "^2.11.0",
     "aws-lambda": "^1.0.5",
-    "aws-sdk": "^2.652.0",
+    "aws-sdk": "^2.814.0",
     "aws-serverless-express": "^3.3.8",
     "boom": "^7.3.0",
     "env-cmd": "^10.1.0",
